@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <string.h>
 
 using namespace std;
 
@@ -93,7 +94,7 @@ class Contenedor {
 			}
 		}
 			
-		bool is_palindroma(){
+		bool esPalindroma(){
 			int temp = cantidad-1;
 			for(int i=0; i<cantidad; i++){ //i=0  temp=8 - 
 				if(hilera[i]!=hilera[temp]){
@@ -108,22 +109,26 @@ class Contenedor {
 
 int main(int argc, char *argv[]) {
 	
-	Contenedor contenedor(15);
-	Contenedor contenedor2(15);
+	Contenedor contenedor(30);
+	Contenedor contenedor2(30);
 	
 	//Prueba 1 Punto
 	string palabra;
-	cout<<"********** Comprobador de palabras******"<<endl;
-	cout<<"Palabra 1: "<<palabra<<endl;;
+
 	
-	for(int i=0; i<6; i++){
+	cout<<"********** Comprobador de palabras******"<<endl;
+	cout<<"Palabra 1: ";
+	cin>> palabra;
+		for(int i=0; i<30; i++){
 		contenedor.insertarPalabraMinuscula(palabra[i]);
 	}
-
+	
+	// contenedor.insertarPalabraMinuscula(palabra[i]);
 	cout<<"Palabra en minuscula: ";
+	
 	cout<<(contenedor.toString());
 	
-	if(contenedor.is_palindroma()){
+	if(contenedor.esPalindroma()){
 			cout<<"Es palindroma";
 	}else{
 			cout<<"No es palindroma";
@@ -147,7 +152,7 @@ int main(int argc, char *argv[]) {
 	cout<<"Palabra en minuscula: ";
 	cout<<(contenedor2.toString());
 	
-	if(contenedor2.is_palindroma()){
+	if(contenedor2.esPalindroma()){
 		cout<<"Es palindroma";
 	}else{
 		cout<<"No es palindroma";
