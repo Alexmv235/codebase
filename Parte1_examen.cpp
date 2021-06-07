@@ -112,18 +112,17 @@ int main(int argc, char *argv[]) {
 	Contenedor contenedor(30);
 	Contenedor contenedor2(30);
 	
-	//Prueba 1 Punto
-	string palabra;
+	/*Prueba 1 Punto
+	int n;
+	char palabra[30];
 
 	
 	cout<<"********** Comprobador de palabras******"<<endl;
 	cout<<"Palabra 1: ";
-	cin>> palabra;
-		for(int i=0; i<30; i++){
+	cin>> palabra[30];
+		for(int i=0; i<n ; i++){
 		contenedor.insertarPalabraMinuscula(palabra[i]);
 	}
-	
-	// contenedor.insertarPalabraMinuscula(palabra[i]);
 	cout<<"Palabra en minuscula: ";
 	
 	cout<<(contenedor.toString());
@@ -141,8 +140,8 @@ int main(int argc, char *argv[]) {
 	cout<<"Palabra codificada: ";
 	cout<<(contenedor.toString());
 	
-	cout<<endl<<"********************************"<<endl;
-	palabra= "ReConoCER";
+	 cout<<endl<<"********************************"<<endl;
+	palabra[n] = "ReConoCER";
 	cout<<"Palabra 2: "<<palabra<<endl;
 	
 	for(int i=0; i<9; i++){
@@ -164,7 +163,7 @@ int main(int argc, char *argv[]) {
 	
 	contenedor2.codifica();
 	cout<<"Palabra codificada: ";
-	cout<<(contenedor2.toString());
+	cout<<(contenedor2.toString()); */
 	cout<<endl;
 	return 0;
 }
