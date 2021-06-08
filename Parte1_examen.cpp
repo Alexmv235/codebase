@@ -137,32 +137,7 @@ int main(int argc, char *argv[]) {
 	
 	contenedor.codifica();
 	cout<<"Palabra codificada: ";
-	cout<<(contenedor.toString());
-	
-	cout<<endl<<"********************************"<<endl;
-	palabra= "ReConoCER";
-	cout<<"Palabra 2: "<<palabra<<endl;
-	
-	for(int i=0; i<9; i++){
-		contenedor2.insertarPalabraMinuscula(palabra[i]);
-	}
-	
-	cout<<"Palabra en minuscula: ";
-	cout<<(contenedor2.toString());
-	
-	if(contenedor2.esPalindroma()){
-		cout<<"Es palindroma";
-	}else{
-		cout<<"No es palindroma";
-	}
-	
-	contenedor2.plural();
-	cout<<endl<<"Palabra en plural: ";
-	cout<<(contenedor2.toString());
-	
-	contenedor2.codifica();
-	cout<<"Palabra codificada: ";
-	cout<<(contenedor2.toString());
+	cout<<(contenedor.toString());	
 	cout<<endl;
 	return 0;
 }
