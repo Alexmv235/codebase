@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
 	int n;
 
 	cout<<"********** Comprobador de palabras******"<<endl;
-	cout<<"Palabra 1: ";
+	cout<<"Palabra: ";
 	cin>> palabra;
 	cout<<"Dijite la cantidad de letras que tiene la palabra"<<endl;
 	cin>>n;
