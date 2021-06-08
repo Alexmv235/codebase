@@ -111,15 +111,15 @@ int main(int argc, char *argv[]) {
 	
 	Contenedor contenedor(30);
 	Contenedor contenedor2(30);
-	
-	//Prueba 1 Punto
 	string palabra;
+	int n;
 
-	
 	cout<<"********** Comprobador de palabras******"<<endl;
 	cout<<"Palabra 1: ";
 	cin>> palabra;
-		for(int i=0; i<4; i++){
+	cout<<"Dijite la cantidad de letras que tiene la palabra"<<endl;
+	cin>>n;
+		for(int i=0; i<n; i++){
 		contenedor.insertarPalabraMinuscula(palabra[i]);
 	}
 	cout<<"Palabra en minuscula: ";
