@@ -96,7 +96,7 @@ class Contenedor {
 			
 		bool esPalindroma(){
 			int temp = cantidad-1;
-			for(int i=0; i<cantidad; i++){ //i=0  temp=8 - 
+			for(int i=0; i<cantidad; i++){ //i=0  temp= cant -
 				if(hilera[i]!=hilera[temp]){
 					return false;
 				}
@@ -110,7 +110,6 @@ class Contenedor {
 int main(int argc, char *argv[]) {
 	
 	Contenedor contenedor(30);
-	Contenedor contenedor2(30);
 	string palabra;
 	int n;
 
