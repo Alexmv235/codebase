@@ -1,0 +1,54 @@
+# 0 "D:\\amv22\\Documentos\\GitHub\\c++\\.vscode\\launch.json"
+# 1 "D:\\amv22\\Documentos\\GitHub\\c++\\.vscode//"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "D:\\amv22\\Documentos\\GitHub\\c++\\.vscode\\launch.json"
+{
+
+
+
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Iniciar",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "Escriba el nombre del programa; por ejemplo, ${workspaceFolder}/CCCPZ/Parte1_examen.exe.",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/path/to/gdb",
+            "setupCommands": [
+                {
+                    "description": "Habilitar la impresión con sangría para gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "cpp.exe - Compilar y depurar el archivo activo",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}\\${fileBasenameNoExtension}/CCCPZ/Parte1_examen.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\w64devkit\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Habilitar la impresión con sangría para gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: cpp.exe compilar archivo activo"
+        }
+    ]
+}
