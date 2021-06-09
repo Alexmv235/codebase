@@ -143,11 +143,14 @@ int main(int argc, char *argv[])
 {
 
 	Contenedor contenedor(30);
+	Contenedor contenedor2(30);
+	Contenedor contenedor3(30);
 	string palabra;
+
 	int n;
 
 	cout << "********** Comprobador de palabras******" << endl;
-	cout << "Palabra: ";
+	cout << "Palabra 1: ";
 	cin >> palabra;
 	cout << "Dijite la cantidad de letras que tiene la palabra" << endl;
 	cin >> n;
@@ -176,5 +179,67 @@ int main(int argc, char *argv[])
 	cout << "Palabra codificada: ";
 	cout << (contenedor.toString());
 	cout << endl;
+	palabra = "Atrasa";
+cout << "********************************" << endl;
+cout << "Palabra 2: " << palabra << endl;
+;
+
+for (int i = 0; i < 6; i++)
+{
+	contenedor2.insertarPalabraMinuscula(palabra[i]);
+}
+
+cout << "Palabra en minuscula: ";
+cout << (contenedor2.toString());
+
+if (contenedor2.esPalindroma())
+{
+	cout << "Es palindroma";
+}
+else
+{
+	cout << "No es palindroma";
+}
+contenedor2.plural();
+cout << endl
+	 << "Palabra en plural: ";
+cout << (contenedor2.toString());
+
+contenedor.codifica();
+cout << "Palabra codificada: ";
+cout << (contenedor2.toString());
+
+cout << endl
+	 << "********************************" << endl;
+palabra = "ReConoCER";
+cout << "Palabra 3: " << palabra << endl;
+
+for (int i = 0; i < 9; i++)
+{
+	contenedor3.insertarPalabraMinuscula(palabra[i]);
+}
+
+cout << "Palabra en minuscula: ";
+cout << (contenedor3.toString());
+
+if (contenedor3.esPalindroma())
+{
+	cout << "Es palindroma";
+}
+else
+{
+	cout << "No es palindroma";
+}
+
+contenedor3.plural();
+cout << endl
+	 << "Palabra en plural: ";
+cout << (contenedor3.toString());
+
+contenedor3.codifica();
+cout << "Palabra codificada: ";
+cout << (contenedor3.toString());
+cout << endl;
 	return 0;
 }
+
