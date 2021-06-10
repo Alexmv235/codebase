@@ -26,6 +26,7 @@ public:
 		for (int i = 0; i < tamano; i++)
 			hilera[i] = ' ';
 	}
+	//Set&Get
 	int getCantidad()
 	{
 		return this->cantidad;
@@ -42,6 +43,7 @@ public:
 	{
 		this->tamano = tamano;
 	}
+	//Insertar Elemento en el vector hilera
 	void insertarElemento(char elem)
 	{
 		if (cantidad < tamano)
@@ -50,6 +52,7 @@ public:
 			cantidad++;
 		}
 	}
+	// To string para imprimir hilera
 	string toString()
 	{
 		stringstream s;
@@ -58,7 +61,7 @@ public:
 		s << endl;
 		return s.str();
 	}
-
+	// Metodo para insertar la palabra convertida en minuscula en insertar elemento
 	void insertarPalabraMinuscula(char letra)
 	{
 		int numAscii = (int)letra;
@@ -69,7 +72,7 @@ public:
 		char nuevaLetra = (char)numAscii;
 		insertarElemento(nuevaLetra);
 	}
-
+	//Metodo para convertir la palabra almacenada en hilera en plural
 	void plural()
 	{
 		char ultLetra = hilera[cantidad - 1];
@@ -98,7 +101,7 @@ public:
 			}
 		}
 	}
-
+	//Metodo para codificar las vocales en numeros correspondientes
 	void codifica()
 	{
 		for (int i = 0; i < cantidad; i++)
@@ -123,7 +126,7 @@ public:
 			}
 		}
 	}
-
+	//Metodo bool para verificar si la palabra es palindroma
 	bool esPalindroma()
 	{
 		int temp = cantidad - 1;
@@ -141,14 +144,14 @@ public:
 
 int main(int argc, char *argv[])
 {
-
+	// Objetos
 	Contenedor contenedor(30);
 	Contenedor contenedor2(30);
 	Contenedor contenedor3(30);
 	string palabra;
-
+	//Variable n para cantidad de letras
 	int n;
-
+	// Solicitud de palabra para utilizar los metodos
 	cout << "********** Comprobador de palabras******" << endl;
 	cout << "Palabra 1: ";
 	cin >> palabra;
@@ -179,67 +182,69 @@ int main(int argc, char *argv[])
 	cout << "Palabra codificada: ";
 	cout << (contenedor.toString());
 	cout << endl;
-	palabra = "Atrasa";
-cout << "********************************" << endl;
-cout << "Palabra 2: " << palabra << endl;
-;
+	// Prueba de los metodos
+	//Palabra 1, no es palindroma
+	palabra = "AtRAsa";
+	cout << "********************************" << endl;
+	cout << "Palabra 2: " << palabra << endl;
 
-for (int i = 0; i < 6; i++)
-{
+
+	for (int i = 0; i < 6; i++)
+	{
 	contenedor2.insertarPalabraMinuscula(palabra[i]);
-}
+	}
 
-cout << "Palabra en minuscula: ";
-cout << (contenedor2.toString());
+	cout << "Palabra en minuscula: ";
+	cout << (contenedor2.toString());
 
-if (contenedor2.esPalindroma())
-{
-	cout << "Es palindroma";
-}
-else
-{
-	cout << "No es palindroma";
-}
-contenedor2.plural();
-cout << endl
-	 << "Palabra en plural: ";
-cout << (contenedor2.toString());
+	if (contenedor2.esPalindroma())
+	{
+		cout << "Es palindroma";
+	}
+	else
+	{
+		cout << "No es palindroma";
+	}
+	contenedor2.plural();
+	cout << endl
+		<< "Palabra en plural: ";
+	cout << (contenedor2.toString());
 
-contenedor.codifica();
-cout << "Palabra codificada: ";
-cout << (contenedor2.toString());
+	contenedor.codifica();
+	cout << "Palabra codificada: ";
+	cout << (contenedor2.toString());
 
-cout << endl
-	 << "********************************" << endl;
-palabra = "ReConoCER";
-cout << "Palabra 3: " << palabra << endl;
+	//Prueba 2 palabra palindroma
+	cout << endl << "********************************" << endl;
+	palabra = "ReConoCER";
+	cout << "Palabra 3: " << palabra << endl;
 
-for (int i = 0; i < 9; i++)
-{
-	contenedor3.insertarPalabraMinuscula(palabra[i]);
-}
+	for (int i = 0; i < 9; i++)
+	{
+		contenedor3.insertarPalabraMinuscula(palabra[i]);
+	}
 
-cout << "Palabra en minuscula: ";
-cout << (contenedor3.toString());
+	cout << "Palabra en minuscula: ";
+	cout << (contenedor3.toString());
 
-if (contenedor3.esPalindroma())
-{
-	cout << "Es palindroma";
-}
-else
-{
-	cout << "No es palindroma";
-}
+	if (contenedor3.esPalindroma())
+	{
+		cout << "Es palindroma";
+	}
+	else
+	{
+		cout << "No es palindroma";
+	}
 
-contenedor3.plural();
-cout << endl
-	 << "Palabra en plural: ";
-cout << (contenedor3.toString());
+	contenedor3.plural();
+	cout << endl
+		<< "Palabra en plural: ";
+	cout << (contenedor3.toString());
 
-contenedor3.codifica();
-cout << "Palabra codificada: ";
-cout << (contenedor3.toString());
-cout << endl;
+	contenedor3.codifica();
+	cout << "Palabra codificada: ";
+	cout << (contenedor3.toString());
+	cout << endl;
 	return 0;
 }
 
