@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
 	
 	cout<<"promedio mate"<<endl;
 	cout<<"Quices:"<<quiz<<"  / 30"<<endl;
-	cout<<"Exámenes:"<<exm<<"  / 60"<<endl;
+	cout<<"Examenes:"<<exm<<"  / 60"<<endl;
 	cout<<"tareas y puntos extra:"<<tarea<<"  / 10"<<endl;
 	cout<<"Pormedio final:"<<endl<<endl;
 	cout<<suma<<"  /100"<<endl;
