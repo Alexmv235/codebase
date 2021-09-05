@@ -18,7 +18,7 @@ current_source=main.cpp
 path_char=\
 [source]
 path=main.cpp
-cursor=205:35
+cursor=150:23
 marker=0
 open=true
 [config]
