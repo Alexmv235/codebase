@@ -1,4 +1,5 @@
 #include<iostream>
+//Alexander Montero
 using namespace std;
 class nodo
 {
@@ -78,15 +79,34 @@ public:
 		}
 		else
 		{
-			while(aux->getSig()!=NULL)
+			if (n<aux->getN())
 			{
-				aux=aux->getSig();
+				dato=new class nodo();
+				dato->setN(n);
+				dato->setAnt(NULL);
+				dato->setSig(ini);
+				ini=dato;
 			}
-			dato=new class nodo();
-			dato->setN(n);
-			dato->setAnt(aux);
-			dato->setSig(NULL);
-			aux->setSig(dato);
+			else
+			{
+				bool bandera=false;
+				while(aux->getSig()!=NULL && !bandera)
+				{
+					if (aux->getN()<n && aux->getSig()->getN()>n)
+					{
+						bandera=true;
+					}
+					else
+					{	
+					aux=aux->getSig();
+					}
+				}
+				dato=new class nodo();
+				dato->setN(n);
+				dato->setAnt(aux);
+				dato->setSig(aux->getSig());
+				aux->setSig(dato);
+		}
 		}
 	}
 	void mostrar()
@@ -105,7 +125,7 @@ lista *lis;
 int main (int argc, char *argv[]) {
 	
 	lis=new class lista();
-	lis->insertar(1);
+	lis->insertar(500);
 	lis->insertar(84);
 	lis->insertar(42);
 	lis->insertar(47);
