@@ -98,7 +98,7 @@ public:
 					}
 					else
 					{	
-					aux=aux->getSig();
+						aux=aux->getSig();
 					}
 				}
 				dato=new class nodo();
@@ -106,9 +106,11 @@ public:
 				dato->setAnt(aux);
 				dato->setSig(aux->getSig());
 				aux->setSig(dato);
-		}
+			}
 		}
 	}
+	
+	
 	void mostrar()
 	{
 		nodo *aux;
@@ -120,23 +122,156 @@ public:
 		}
 		cout<<"NULL"<<endl;
 	}
+	//Sumar
+	void sumar()
+	{
+		int sum=0;
+		nodo *aux;
+		aux=ini;
+		while(aux!=NULL)
+		{
+			sum=sum+aux->getN();
+			aux=aux->getSig();
+		}
+		cout<<sum<<endl;
+	}
+	//promedio
+	void promedio()
+	{
+		float sum=0, cont=0, prom=0;
+		nodo *aux;
+		aux=ini;
+		while(aux!=NULL)
+		{
+			sum=sum+aux->getN();
+			aux=aux->getSig();
+			cont++;
+		}
+		prom= (sum/cont);
+		cout<<prom<<endl;
+	}
+	//buscar valor
+	void buscar()
+	{
+		int cons=0;
+		cout<<"dijite el numero"<<endl;
+		cin>>cons;
+		bool presente=false;
+		nodo *aux;
+		aux=ini;
+		while(aux!=NULL)
+		{
+			if(aux->getN()==cons)
+			{
+				presente=true;
+				
+				aux->getSig()->setAnt(aux->getAnt());
+				aux->getAnt()->setSig(aux->getSig());
+			}
+			aux=aux->getSig();
+		}
+		if (presente==true)
+		{
+			cout<<"Si esta"<<endl;
+		}
+		else
+		{
+			cout<<"No esta"<<endl;
+		}
+	}
+	void eliminar()
+	{
+		int numb=0;
+		cout<<"dijite el numero"<<endl;
+		cin>>numb;
+		nodo *aux;
+		aux=ini;
+		while(aux!=NULL)
+		{
+			if(aux->getN()==numb)
+			{
+				aux->getSig()->setAnt(aux->getAnt());
+				aux->getAnt()->setSig(aux->getSig());
+			}
+		}
+		cout<<"se elimino"<<endl;
+	}
 };
 lista *lis;
 int main (int argc, char *argv[]) {
 	
+	int opc;
 	lis=new class lista();
-	lis->insertar(500);
-	lis->insertar(84);
-	lis->insertar(42);
-	lis->insertar(47);
-	lis->insertar(38);
-	lis->insertar(62);
-	lis->insertar(76);
-	lis->insertar(81);
-	lis->insertar(9);
-	lis->insertar(41);
+	lis->insertar(1);
+	lis->insertar(12);
+	lis->insertar(13);
+	lis->insertar(14);
+	lis->insertar(15);
+	lis->insertar(16);
+	lis->insertar(17);
+	lis->insertar(18);
+	lis->insertar(19);
+	lis->insertar(10);
 	lis->mostrar();
-	system("PAUSE");
+	lis->buscar();
+	lis->eliminar();
+	/*{
+		do
+		{
+			system("CLS");
+			cout<<"1-Insertar"<<endl;
+			cout<<"2-Mostar"<<endl;
+			cout<<"3-Suma"<<endl;
+			cout<<"4-Promedio"<<endl;
+			cout<<"5-Buscar"<<endl;
+			cout<<"6-eliminar"<<endl;
+			cout<<"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"<<endl;
+			cin>>opc;
+			
+			switch(opc)
+			{
+			case 1:
+				lis=new class lista();
+				lis->insertar(1);
+				lis->insertar(12);
+				lis->insertar(13);
+				lis->insertar(14);
+				lis->insertar(15);
+				lis->insertar(16);
+				lis->insertar(17);
+				lis->insertar(18);
+				lis->insertar(19);
+				lis->insertar(10);
+				break;
+			case 2:
+				lis->mostrar();
+				break;
+			case 3:
+				lis->sumar();
+				break;
+			case 4:
+				lis->promedio();
+				break;
+			case 5:
+				lis->buscar();
+				break;
+			case 6:
+				lis->eliminar();
+				break;
+			case 7:
+				break;
+			}
+			system("PAUSE"); 
+		} while(opc!=7);
+		
+	}*/
 	return 0;
+	
+	//22-09-21
+	//Menu
+	//Obtener la sumatoria de la lista
+	//Obtener el promedio de la lista
+	//Buscar en la lista (devolver true o false) si está o no
+	//Elminar un valor de la lista.
 }
 
