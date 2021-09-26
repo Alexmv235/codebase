@@ -164,9 +164,6 @@ public:
 			if(aux->getN()==cons)
 			{
 				presente=true;
-				
-				aux->getSig()->setAnt(aux->getAnt());
-				aux->getAnt()->setSig(aux->getSig());
 			}
 			aux=aux->getSig();
 		}
@@ -181,41 +178,34 @@ public:
 	}
 	void eliminar()
 	{
-		int numb=0;
+		int cons=0;
 		cout<<"dijite el numero"<<endl;
-		cin>>numb;
+		cin>>cons;
 		nodo *aux;
 		aux=ini;
+		bool elm=false;
 		while(aux!=NULL)
 		{
-			if(aux->getN()==numb)
+			if(aux->getN()==cons)
 			{
 				aux->getSig()->setAnt(aux->getAnt());
 				aux->getAnt()->setSig(aux->getSig());
+				elm=true;
 			}
+			aux=aux->getSig();
 		}
-		cout<<"se elimino"<<endl;
+		if (elm==true)
+		{
+			cout<<"se elimino"<<endl;
+		}
 	}
 };
 lista *lis;
 int main (int argc, char *argv[]) {
 	
 	int opc;
-	lis=new class lista();
-	lis->insertar(1);
-	lis->insertar(12);
-	lis->insertar(13);
-	lis->insertar(14);
-	lis->insertar(15);
-	lis->insertar(16);
-	lis->insertar(17);
-	lis->insertar(18);
-	lis->insertar(19);
-	lis->insertar(10);
-	lis->mostrar();
-	lis->buscar();
-	lis->eliminar();
-	/*{
+
+	{
 		do
 		{
 			system("CLS");
@@ -264,7 +254,7 @@ int main (int argc, char *argv[]) {
 			system("PAUSE"); 
 		} while(opc!=7);
 		
-	}*/
+	}
 	return 0;
 	
 	//22-09-21
