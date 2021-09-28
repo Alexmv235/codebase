@@ -180,15 +180,27 @@ public:
 	//NOTA* no funciona con el menor ni el mayor valor
 	void eliminar()
 	{
+		
 		int cons=0;
 		cout<<"dijite el numero"<<endl;
 		cin>>cons;
 		nodo *aux;
 		aux=ini;
-		bool elm=false;
 		while (aux != NULL)
 		{
-			if (aux->getN() == cons)
+			if(aux->getN() == cons && aux->getAnt() == NULL)
+			{
+				cout<<"es el primero, por el momento no podemos elminar este elemento"<<endl;
+				
+				//aux->getSig()->setSig(aux->getAnt());
+			}
+			else if(aux->getN() == cons && aux->getSig() == NULL)
+			{
+				//cout<<"es el ultimo"<<endl;
+				//Combinacion 211 si funciona
+				aux->getAnt()->setSig(aux->getSig());;
+			}
+			else if (aux->getN() == cons)
 			{
 				aux->getSig()->setAnt(aux->getAnt());
 				aux->getAnt()->setSig(aux->getSig());
