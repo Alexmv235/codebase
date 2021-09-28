@@ -176,6 +176,8 @@ public:
 			cout<<"No esta"<<endl;
 		}
 	}
+	//eliminar
+	//NOTA* no funciona con el menor ni el mayor valor
 	void eliminar()
 	{
 		int cons=0;
@@ -184,19 +186,14 @@ public:
 		nodo *aux;
 		aux=ini;
 		bool elm=false;
-		while(aux!=NULL)
+		while (aux != NULL)
 		{
-			if(aux->getN()==cons)
+			if (aux->getN() == cons)
 			{
 				aux->getSig()->setAnt(aux->getAnt());
 				aux->getAnt()->setSig(aux->getSig());
-				elm=true;
 			}
-			aux=aux->getSig();
-		}
-		if (elm==true)
-		{
-			cout<<"se elimino"<<endl;
+			aux = aux->getSig();
 		}
 	}
 };
