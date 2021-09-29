@@ -177,7 +177,7 @@ public:
 		}
 	}
 	//eliminar
-	//NOTA* no funciona con el menor ni el mayor valor
+	//NOTA* no funciona con el menor
 	void eliminar()
 	{
 		
@@ -190,15 +190,14 @@ public:
 		{
 			if(aux->getN() == cons && aux->getAnt() == NULL)
 			{
-				cout<<"es el primero, por el momento no podemos elminar este elemento"<<endl;
-				
-				//aux->getSig()->setSig(aux->getAnt());
+				//cout<<"es el primero"<<endl;
+				 ini = aux->getSig();
 			}
 			else if(aux->getN() == cons && aux->getSig() == NULL)
 			{
 				//cout<<"es el ultimo"<<endl;
 				//Combinacion 211 si funciona
-				aux->getAnt()->setSig(aux->getSig());;
+				aux->getAnt()->setSig(aux->getSig());
 			}
 			else if (aux->getN() == cons)
 			{
@@ -239,7 +238,7 @@ int main (int argc, char *argv[]) {
 				lis->insertar(16);
 				lis->insertar(17);
 				lis->insertar(18);
-				lis->insertar(19);
+				lis->insertar(28);
 				lis->insertar(10);
 				break;
 			case 2:
