@@ -28,14 +28,14 @@
             "name": "cpp.exe - Compilar y depurar el archivo activo",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}\\${fileBasenameNoExtension}/CCCPZ/Parte1_examen.exe",
+            "program": "${fileDirname}\\${fileBasenameNoExtension}",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\w64devkit\\bin\\gdb.exe",
+            "miDebuggerPath": "D:\\Program Files (x86)\\ZinjaI\\mingw32-gcc6\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "Habilitar la impresión con sangría para gdb",

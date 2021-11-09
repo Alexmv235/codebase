@@ -20,7 +20,7 @@ struct provincias
 	string nombreProv;
 	provincias *sig;
 	provincias *ant;
-	cantones *cantones;
+	cantones *canton;
 };
 provincias *ini=NULL, *aux=NULL;
 cantones *iniCan=NULL, *auxc=NULL;
@@ -69,7 +69,7 @@ void insertarProvincia(provincias *&p, string n)
 		p=new provincias;
 		p->nombreProv=n;
 		p->sig=NULL;
-		p->cantones=NULL;
+		p->canton=NULL;
 	}
 	else
 	{
@@ -98,7 +98,7 @@ void insertarCantonProvincia(string nonProv, string nonCant)
 	{	
 		if(aux->nombreProv==nonProv)
 		{
-			insertarCanton(aux->cantones, nonCant);
+			insertarCanton(aux->canton, nonCant);
 			band=true;
 		}
 		aux=aux->sig;
@@ -148,22 +148,17 @@ void mostrarDatosProvincia(provincias *p)
 	{
 		cout<<p->nombreProv<<endl;
 		cout<<"\t";
-		mostrarCantones(p->cantones);
+		mostrarCantones(p->canton);
 		mostrarDatosProvincia(p->sig);
 	}
 }
 //Insertar Ventas por Canton
-void insertarVentaCanton(string nombCan, int mont, int an)
+void insertarVentaCanton(cantones *c, string nombCan, int mont, int an)
 {
 	bool band=false;
-	auxc=iniCan;
-	aux=ini;
-	while (aux!=NULL)
+	auxc=c;
+	while (auxc!=NULL)
 	{	
-		if(aux->nombreProv=="Puntarenas")
-		{
-		while (auxc!=NULL)
-		{	
 		if(auxc->nombreCan==nombCan)
 		{
 			insertarVenta(auxc->venta, mont, an);
@@ -171,38 +166,65 @@ void insertarVentaCanton(string nombCan, int mont, int an)
 		}
 		auxc=auxc->sig;
 		}
-		}
-		aux=aux->sig;
-	}
 	if(band==false)
 	{
-		cout<<"Insertar: La provincia o el canton no estan disponibles"<<endl;
+		cout<<"Insertar: El canton no esta disponible"<<endl;
 	}
 }
-//Mostrar ventas por Provincia
-void mostrarVentaProvincia(string nombProv)
+//Insertar Ventas por Provincia
+void insertarVentaProvincia(string nomProv, string nombCan, int mont, int an)
 {
 	bool band=false;
-	auxc=iniCan;
 	aux=ini;
 	while (aux!=NULL)
 	{	
-		if(aux->nombreProv==nombProv)
+		if(aux->nombreProv==nomProv)
 		{
-			while (auxc!=NULL)
-			{
-				mostrarVentasR(auxc->venta);
-				band=true;
-			}
-			auxc=auxc->sig;
+			insertarVentaCanton(aux->canton, nombCan, mont, an);
+			band=true;
 		}
-		aux=aux->sig;
 	}
+	aux=aux->sig;
+	if(band==false)
+	{
+		cout<<"Insertar: La provincia no esta disponible"<<endl;
+	}
+}
+//Mostrar ventas por Canton
+void mostrarVentaCanton(cantones *c)
+{
+	bool band=false;
+	auxc=c;	
+	while (auxc!=NULL)
+	{
+		mostrarVentasR(auxc->venta);
+		band=true;
+	}
+	auxc=auxc->sig;
 	if(band==false)
 	{
 		cout<<"mostrar venta: La provincia el canton no estan disponibles"<<endl;
 	}
 	
+}
+//Mostrar ventas por Provincia
+void mostrarVentaProvincia(string nombProv)
+{
+	bool band=false;
+	aux=ini;
+	while (aux!=NULL)
+	{	
+		if(aux->nombreProv==nombProv)
+		{
+			mostrarVentaCanton(aux->canton);
+			band=true;	
+		}
+	}
+	aux=aux->sig;
+	if(band==false)
+	{
+		cout<<"mostrarventa: error"<<endl;
+	}
 }
 
 //Suma universal (para invocar)
@@ -273,18 +295,22 @@ int main (int argc, char *argv[]) {
 	
 	
 	insertarProvincia(ini,"Puntarenas");
+	insertarProvincia(ini,"Cartago");
 	mostrarProvincias(ini);
 	system("PAUSE"); 
 	insertarCantonProvincia("Puntarenas","Quepos");
 	insertarCantonProvincia("Puntarenas","Parrita");
-	mostrarCantones(iniCan);
-	system("PAUSE"); 
+	insertarCantonProvincia("Cartago","Guarco");
+	insertarCantonProvincia("Cartago","Cachi");
 	mostrarDatosProvincia(ini);
 	system("PAUSE"); 
-	insertarVentaCanton("Quepos", 1500, 2019);
-	insertarVentaCanton("Quepos", 2000, 2018);
-	insertarVentaCanton("Parrita", 2700, 2019);
-	insertarVentaCanton("Parrita", 8000, 2017);
+	cout<<"insertando"<<endl;
+	
+	//insertar
+	insertarVentaProvincia("Puntarenas","Quepos", 1500, 2019);
+	insertarVentaProvincia("Puntarenas","Quepos", 2000, 2018);
+	insertarVentaProvincia("Puntarenas","Parrita", 2700, 2019);
+	insertarVentaProvincia("Puntarenas","Parrita", 8000, 2017);
 	mostrarVentaProvincia("Puntarenas");
 	
 	
