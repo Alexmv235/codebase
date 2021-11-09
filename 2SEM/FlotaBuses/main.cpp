@@ -1,4 +1,5 @@
 #include<iostream>
+#include<windows.h>
 //Alexander Montero
 using namespace std;
 struct ventas
@@ -34,7 +35,7 @@ void mostrarVentas(ventas *v)
 {
 	while (v!=NULL)
 	{
-		cout<<v->monto<<" ->";
+		cout<<v->monto<<" -> ";
 		v=v->sig;
 	}
 	cout<<"NULL"<<endl;
@@ -43,7 +44,7 @@ void mostrarVentasR(ventas *v)
 {
 	if(v!=NULL)
 	{	
-		cout<<v->monto<<" ->";
+		cout<<v->monto<<" -> ";
 		mostrarVentasR(v->sig);
 	}
 	else
@@ -69,7 +70,7 @@ void mostrarEmpleadosR(empleados *e)
 {
 	if(e!=NULL)
 	{	
-		cout<<e->nombre<<" ->";
+		cout<<e->nombre<<" -> ";
 		mostrarEmpleadosR(e->sig);
 	}
 	else
@@ -84,51 +85,139 @@ void mostrarDatosCompletos(empleados *e)
 		cout<<e->nombre<<endl;
 		cout<<"\t";
 		mostrarVentasR(e->venta);
+		cout<<"\t";
+		cout<<"Tst1"<<endl;
+		cout<<"\t";
+		mostrarVentasR(e->venta);
 		mostrarDatosCompletos(e->sig);
 	}
 }
 //Insertar Ventas por nombre
-void insertarVentaNomb(empleados *&e, string nomb, int mont)
+void insertarVentaNomb(string nomb, int mont)
 {
+	bool band=false;
 	aux=ini;
 	while (aux!=NULL)
 	{	
 		if(aux->nombre==nomb)
 		{
 			insertarVenta(aux->venta, mont);
+			band=true;
 		}
 		aux=aux->sig;
 	}
+	if(band==false)
+	{
+		cout<<"El empleado no está registrado"<<endl;
+	}
 }
 //Mostrar Ventas de Un empleado
-void mostrarVentaEmp(empleados *&e, string nomb)
+void mostrarVentaEmp(string nomb)
 {
 	aux=ini;
+	bool band=false;
 	while (aux!=NULL)
 	{	
 		if(aux->nombre==nomb)
 		{
 			mostrarVentasR(aux->venta);
+			band=true;
 		}
 		aux=aux->sig;
 	}
+	if(band==false)
+	{
+		cout<<"El empleado no está registrado"<<endl;
+	}
 }
+//Suma universal (para invocar)
+int sumar(ventas *&v)
+{
+	int sum=0;
+	auxv=v;
+	while (auxv!=NULL)
+	{
+		sum=sum+auxv->monto;
+		auxv=auxv->sig;
+	}
+	return sum;
+}
+//Suma de un empleado
+void sumarVentasEmpleado(string nomb)
+{
+	aux=ini;
+	bool band=false;
+	while (aux!=NULL)
+	{	
+		if(aux->nombre==nomb)
+		{
+			cout<<sumar(aux->venta)<<endl;
+			band=true;
+		}
+		aux=aux->sig;
+	}
+	if(band==false)
+	{
+		cout<<"El empleado no está registrado"<<endl;
+	}
+}
+//Suma de toda la empresa
+void sumarVentasEmpresa()
+{
+	aux=ini;
+	int sumaTot=0;
+	while (aux!=NULL)
+	{	
+		sumaTot=sumaTot+sumar(aux->venta);
+		aux=aux->sig;
+	}
+	cout<<sumaTot<<endl;
+}
+
+//MAIN
 int main (int argc, char *argv[]) {
 	int opc;
 	string nomb="";
 	int mont=0;
+	/*//Bienvenida
+	cout<<"BUSINESS MANAGER 2021"<<endl; 
+	cout<<"V 1.0"<<endl;
+	for(int i=0; i<6;i++){ 
+		cout<<" - "; 
+		Sleep(400);
+	}
+	cout<<endl;
+	system("CLS");
+	//Sesión
+	string s="";
+	cout<<"Inicio de sesion"<<endl; 
+	cout<<"- - - - - - - -"<<endl; 
+	cout<<"Ingrese el nombre para iniciar sesion: "<<endl; 
+	cin>>s;
+	//Iniciando 
+	system("CLS");
+	cout<<"iniciando sesion"<<endl; 
+	for(int i=0; i<6;i++){ 
+		cout<<" - "; 
+		Sleep(200);
+	}
+	cout<<endl;
+	*/
 	
 	{
 		do
 		{
 			system("CLS");
+			//cout<<"Sesion actual: "<<s<<endl; 
 			cout<<"1-Insertar Empleado"<<endl;
 			cout<<"2-Insertar una venta de un empleados"<<endl;
 			cout<<"3-Mostrar todo"<<endl;
 			cout<<"4-Mostrar ventas de un empleado"<<endl;
 			cout<<"5-Mostrar empleados"<<endl;
-			cout<<"6-Agrgar información predeterminada"<<endl;
-			cout<<"7-Salir"<<endl;
+			cout<<"6-Agregar información predeterminada"<<endl;
+			cout<<"7-Suma de ventas de un empleado"<<endl;
+			cout<<"8-Suma de ventas de toda la empresa"<<endl;
+			cout<<"9-Salir"<<endl;
 			cout<<"- - - - - - - - - - - - - - - - - - - - -"<<endl;
 			cin>>opc;
 			
@@ -146,7 +235,7 @@ int main (int argc, char *argv[]) {
 				cin>>nomb;
 				cout<<"dijite el  monto de la venta"<<endl;
 				cin>>mont;
-				insertarVentaNomb(ini, nomb, mont);
+				insertarVentaNomb(nomb, mont);
 				cout<<endl;
 				//mostrarDatosCompletos(ini);
 				break;
@@ -156,7 +245,7 @@ int main (int argc, char *argv[]) {
 			case 4:
 				cout<<"dijite el  nombre"<<endl;
 				cin>>nomb;
-				mostrarVentaEmp(ini, nomb);
+				mostrarVentaEmp(nomb);
 				cout<<endl;
 				break;
 			case 5:
@@ -164,23 +253,32 @@ int main (int argc, char *argv[]) {
 				break;
 			case 6:
 				insertarEmpleados(ini, "Marcos");
-				insertarVentaNomb(ini, "Marcos", 1500);
-				insertarVentaNomb(ini, "Marcos", 2500);
-				insertarVentaNomb(ini, "Marcos", 1800);
+				insertarVentaNomb("Marcos", 1500);
+				insertarVentaNomb("Marcos", 2500);
+				insertarVentaNomb("Marcos", 1800);
 				insertarEmpleados(ini, "Alondra");
-				insertarVentaNomb(ini, "Alondra", 2100);
-				insertarVentaNomb(ini, "Alondra", 5000);
-				insertarEmpleados(ini, "Pedro");
-				insertarVentaNomb(ini, "Pedro", 500);
-				insertarEmpleados(ini, "Maria");
-				insertarVentaNomb(ini, "Maria", 2000);
-				insertarVentaNomb(ini, "Maria", 800);
+				insertarVentaNomb("Alondra", 2100);
+				insertarVentaNomb("Alondra", 5000);
+				insertarEmpleados(ini,"Pedro");
+				insertarVentaNomb("Pedro", 500);
+				insertarEmpleados(ini,"Maria");
+				insertarVentaNomb("Maria", 2000);
+				insertarVentaNomb("Maria", 800);
 				break;
 			case 7:
+				cout<<"dijite el  nombre"<<endl;
+				cin>>nomb;
+				sumarVentasEmpleado(nomb);
+				cout<<endl;
+				break;
+			case 8:
+				sumarVentasEmpresa();
+				break;
+			case 9:
 				break;
 			}
 			system("PAUSE"); 
-		} while(opc!=7);
+		} while(opc!=9);
 		
 	}
 	
