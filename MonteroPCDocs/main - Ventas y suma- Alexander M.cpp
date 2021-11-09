@@ -207,7 +207,7 @@ void mostrarVentaCanton(cantones *c)
 	}
 	
 }
-//Mostrar ventas por Provincia
+//Mostrar ventas por Provincia (corregir)
 void mostrarVentaProvincia(string nombProv)
 {
 	bool band=false;
@@ -307,10 +307,10 @@ int main (int argc, char *argv[]) {
 	cout<<"insertando"<<endl;
 	
 	//insertar
-	insertarVentaProvincia("Puntarenas","Quepos", 1500, 2019);
+	/*insertarVentaProvincia("Puntarenas","Quepos", 1500, 2019);
 	insertarVentaProvincia("Puntarenas","Quepos", 2000, 2018);
 	insertarVentaProvincia("Puntarenas","Parrita", 2700, 2019);
-	insertarVentaProvincia("Puntarenas","Parrita", 8000, 2017);
+	insertarVentaProvincia("Puntarenas","Parrita", 8000, 2017);*/
 	mostrarVentaProvincia("Puntarenas");
 	
 	
