@@ -387,7 +387,7 @@ int main (int argc, char *argv[]) {
 			cout<<"2-Mostrar datos"<<endl;
 			cout<<"3-Revisar datos"<<endl;
 			cout<<"4-Eliminar datos"<<endl;
-			cout<<"5-Salir"<<endl;
+			cout<<"5-Salir sa"<<endl;
 			cout<<"- - - - - - - - - - - - - - - - - - - - -"<<endl;
 			cin>>opc;
 			
