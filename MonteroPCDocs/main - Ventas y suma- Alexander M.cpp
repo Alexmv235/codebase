@@ -4,23 +4,43 @@ using namespace std;
 struct ventas
 {
 	int anno;
-	int monto;
+	float monto;
 	ventas *sig;
+	ventas *ant;
 	
+	ventas(){sig=NULL; ant=NULL;}
+	void setSigVen(ventas *s){sig=s;}
+	void setAntVen(ventas *a){ant=a;}
+	ventas* getSigVen(){return sig;}
+	ventas* getAntVen(){return ant;}
 };
 struct cantones
 {
+	float ganCant;
 	string nombreCan;
 	cantones *sig;
 	cantones *ant;
 	ventas *venta;
+
+	cantones(){sig=NULL; ant=NULL;}
+	void setSigCan(cantones *s){sig=s;}
+	void setAntCan(cantones *a){ant=a;}
+	cantones* getSigCan(){return sig;}
+	cantones* getAntCan(){return ant;}
 };
 struct provincias
 {
+	float ganProv;
 	string nombreProv;
 	provincias *sig;
 	provincias *ant;
 	cantones *canton;
+
+	provincias(){sig=NULL; ant=NULL;}
+	void setSigProv(provincias *s){sig=s;}
+	void setAntProv(provincias *a){ant=a;}
+	provincias* getSigProv(){return sig;}
+	provincias* getAntProv(){return ant;}
 };
 provincias *ini=NULL, *aux=NULL;
 cantones *iniCan=NULL, *auxc=NULL;
@@ -42,6 +62,7 @@ void insertarVenta(ventas *&v, int m, int an)
 }
 void mostrarVentas(ventas *v)
 {
+	cout<<"		";
 	while (v!=NULL)
 	{
 		cout<<v->monto<<"("<<v->anno<<")"<<" -> ";
@@ -51,6 +72,7 @@ void mostrarVentas(ventas *v)
 }
 void mostrarVentasR(ventas *v)
 {
+	cout<<"		";
 	if(v!=NULL)
 	{	
 		cout<<v->monto<<"("<<v->anno<<")"<<" -> ";
@@ -62,35 +84,37 @@ void mostrarVentasR(ventas *v)
 	}
 }
 
-void insertarProvincia(provincias *&p, string n)
+void insertarProvincia(provincias *&p, string n, float gp)
 {
 	if(p==NULL)
 	{
 		p=new provincias;
 		p->nombreProv=n;
+		p->ganProv=gp;
 		p->sig=NULL;
 		p->canton=NULL;
 	}
 	else
 	{
-		insertarProvincia(p->sig,n);
+		insertarProvincia(p->sig,n,gp);
 	}
 }
-void insertarCanton(cantones *&c, string n)
+void insertarCanton(cantones *&c, string n, float gc)
 {
 	if(c ==NULL)
 	{
 		c=new cantones;
 		c->nombreCan=n;
+		c->ganCant=gc;
 		c->sig=NULL;
 		c->venta=NULL;
 	}
 	else
 	{
-		insertarCanton(c->sig,n);
+		insertarCanton(c->sig,n, gc);
 	}
 }
-void insertarCantonProvincia(string nonProv, string nonCant)
+void insertarCantonProvincia(string nonProv, string nonCant, float gc)
 {
 	bool band=false;
 	aux=ini;
@@ -98,7 +122,7 @@ void insertarCantonProvincia(string nonProv, string nonCant)
 	{	
 		if(aux->nombreProv==nonProv)
 		{
-			insertarCanton(aux->canton, nonCant);
+			insertarCanton(aux->canton, nonCant, gc);
 			band=true;
 		}
 		aux=aux->sig;
@@ -165,10 +189,10 @@ void insertarVentaCanton(cantones *c, string nombCan, int mont, int an)
 			band=true;
 		}
 		auxc=auxc->sig;
-		}
+	}
 	if(band==false)
 	{
-		cout<<"Insertar: El canton no esta disponible"<<endl;
+		cout<<endl<<"Insertar: El canton no esta disponible"<<endl;
 	}
 }
 //Insertar Ventas por Provincia
@@ -183,27 +207,22 @@ void insertarVentaProvincia(string nomProv, string nombCan, int mont, int an)
 			insertarVentaCanton(aux->canton, nombCan, mont, an);
 			band=true;
 		}
+		aux=aux->sig;
 	}
-	aux=aux->sig;
 	if(band==false)
 	{
-		cout<<"Insertar: La provincia no esta disponible"<<endl;
+		cout<<endl<<"Insertar: La provincia no esta disponible"<<endl;
 	}
 }
 //Mostrar ventas por Canton
 void mostrarVentaCanton(cantones *c)
 {
-	bool band=false;
 	auxc=c;	
 	while (auxc!=NULL)
 	{
-		mostrarVentasR(auxc->venta);
-		band=true;
-	}
-	auxc=auxc->sig;
-	if(band==false)
-	{
-		cout<<"mostrar venta: La provincia el canton no estan disponibles"<<endl;
+		cout<<"	"<<auxc->nombreCan<<"("<<auxc->ganCant<<")"<<endl;
+		mostrarVentas(auxc->venta);
+		auxc=auxc->sig;
 	}
 	
 }
@@ -216,21 +235,22 @@ void mostrarVentaProvincia(string nombProv)
 	{	
 		if(aux->nombreProv==nombProv)
 		{
+			cout<<aux->nombreProv<<"("<<aux->ganProv<<")"<<endl;
 			mostrarVentaCanton(aux->canton);
 			band=true;	
 		}
+		aux=aux->sig;
 	}
-	aux=aux->sig;
 	if(band==false)
 	{
-		cout<<"mostrarventa: error"<<endl;
+		cout<<endl<<"mostrarventa: La provincia no esta disponible"<<endl;
 	}
 }
 
 //Suma universal (para invocar)
 int sumar(ventas *v)
 {
-	int sum=0;
+	float sum=0;
 	auxv=v;
 	while (auxv!=NULL)
 	{
@@ -240,164 +260,183 @@ int sumar(ventas *v)
 	return sum;
 }
 //Suma de un Canton
-void sumarVentasCanton(string nombCan)
+void sumarVentasCanton()
 {
-	bool bandCan=false;
-	auxc=iniCan;
+	
 	aux=ini;
-	while (aux!=NULL)
+	while(aux!=NULL)
 	{	
-			while (auxc!=NULL)
-			{	
-			if(auxc->nombreCan==nombCan)
+		auxc=aux->canton;
+		while (auxc!=NULL)
+		{
+			if(auxc->ganCant!=sumar(auxc->venta))
 			{
-				cout<<sumar(auxc->venta)<<endl;
-				bandCan=true;
+				cout<<"se detecto un error en el canton "<<auxc->nombreCan<<" de la provincia "<<aux->nombreProv<<endl;
+				auxc->ganCant=sumar(auxc->venta);
+				cout<<"el error se ha corregido"<<endl;
 			}
 			auxc=auxc->sig;
-			}
+		}
 		aux=aux->sig;
-	}
-	if(bandCan==false)
-	{
-		cout<<"El canton no esta disponible"<<endl;
 	}
 }
 //Suma de toda la provincia
-void sumarVentasProvincia(string nombProv)
+void sumarVentasProvincia()
 {
-	bool bandProv=false;
-	auxc=iniCan;
 	aux=ini;
-	int sumaTot=0;
+	
 	while (aux!=NULL)
 	{	
-		if(aux->nombreProv==nombProv)
+		auxc=aux->canton;
+		float sumaTotProv=0;
+		while (auxc!=NULL)
 		{
+			sumaTotProv=sumaTotProv+auxc->ganCant;
+			auxc=auxc->sig;
+		}
+		if (aux->ganProv!=sumaTotProv)
+		{
+			cout<<"se detecto un error en la provincia "<<aux->nombreProv<<endl;
+			aux->ganProv=sumaTotProv;
+			cout<<"el error se ha corregido"<<endl;
+		}
+		aux=aux->sig;
+	}
+}
+void eliminarAnnos(string nomProv, string nombCan, int an)
+{	
+	aux=ini;
+	while (aux!=NULL)
+	{	
+		if(aux->nombreProv==nomProv)
+		{
+			auxc=aux->canton;
 			while (auxc!=NULL)
-			{	
-				sumaTot=sumaTot+sumar(auxc->venta);
+			{
+				if(auxc->nombreCan==nombCan)
+				auxv=auxc->venta;
+				while (auxv!=NULL)
+				{
+				if(auxv->anno == an && auxv->getAntVen() == NULL)
+				{
+					//cout<<"es el primero"<<endl;
+					auxc->venta = auxv->getSigVen();
+				}
+				else if(auxv->anno == an && auxv->getSigVen() == NULL)
+				{
+					//cout<<"es el ultimo"<<endl;
+					//Combinacion 211 si funciona
+					auxv->getAntVen()->setSigVen(auxv->getSigVen());
+				}
+				else if (auxv->anno == an)
+				{
+					auxv->getSigVen()->setAntVen(auxv->getAntVen());
+					auxv->getAntVen()->setSigVen(auxv->getSigVen());
+				}
+				auxv=auxv->sig;
+				}	
 				auxc=auxc->sig;
-				bandProv=true;
 			}
 		}
 		aux=aux->sig;
 	}
-	if(bandProv==false)
-	{
-		cout<<"La provincia no esta disponible"<<endl;
-	}
-	cout<<"La ganacia de la provincia es de"<<sumaTot<<endl;
 }
 
 //MAIN
 int main (int argc, char *argv[]) {
 	
-	
-	insertarProvincia(ini,"Puntarenas");
-	insertarProvincia(ini,"Cartago");
-	mostrarProvincias(ini);
-	system("PAUSE"); 
-	insertarCantonProvincia("Puntarenas","Quepos");
-	insertarCantonProvincia("Puntarenas","Parrita");
-	insertarCantonProvincia("Cartago","Guarco");
-	insertarCantonProvincia("Cartago","Cachi");
-	mostrarDatosProvincia(ini);
-	system("PAUSE"); 
-	cout<<"insertando"<<endl;
-	
-	//insertar
-	/*insertarVentaProvincia("Puntarenas","Quepos", 1500, 2019);
-	insertarVentaProvincia("Puntarenas","Quepos", 2000, 2018);
-	insertarVentaProvincia("Puntarenas","Parrita", 2700, 2019);
-	insertarVentaProvincia("Puntarenas","Parrita", 8000, 2017);*/
-	mostrarVentaProvincia("Puntarenas");
-	
-	
-	
-	
-	
-	/*
 	int opc;
 	string nomb="";
-	int mont=0;
 	
 	{
 		do
 		{
 			system("CLS");
-			cout<<"1-Insertar Empleado"<<endl;
-			cout<<"2-Insertar una venta de un empleados"<<endl;
-			cout<<"3-Mostrar todo"<<endl;
-			cout<<"4-Mostrar ventas de un empleado"<<endl;
-			cout<<"5-Mostrar empleados"<<endl;
-			cout<<"6-Agregar informaci�n predeterminada"<<endl;
-			cout<<"7-Suma de ventas de un empleado"<<endl;
-			cout<<"8-Suma de ventas de toda la empresa"<<endl;
-			cout<<"9-Salir"<<endl;
+			cout<<"1-Insertar datos predeterminados(diagrama)"<<endl;
+			cout<<"2-Mostrar todos los datos"<<endl;
+			cout<<"3-Revisar datos y corregir si es necesario"<<endl;
+			cout<<"4-Eliminar datos-"<<endl;
+			cout<<"5-Salir"<<endl;
 			cout<<"- - - - - - - - - - - - - - - - - - - - -"<<endl;
 			cin>>opc;
 			
 			switch(opc)
 			{
 			case 1:
-				//Insertar empleado
-				cout<<"dijite el  nombre"<<endl;
-				cin>>nomb;
-				insertarEmpleados(ini, nomb);
-				//mostrarDatosCompletos(ini);
+				//Insertar Provincias
+				insertarProvincia(ini,"Puntarenas", 0);
+				insertarProvincia(ini,"Alajuela", 00);
+				insertarProvincia(ini,"Limon", 0);
+				insertarProvincia(ini,"Cartago", 00);
+				insertarProvincia(ini,"San_Jose", 0);
+				insertarCantonProvincia("Puntarenas","Buenos_Aires", 3500);
+				insertarCantonProvincia("Puntarenas","Esparza", 00);
+				insertarCantonProvincia("Puntarenas","Golfito", 00);
+				insertarCantonProvincia("Alajuela","Grecia", 00);
+				insertarCantonProvincia("Alajuela","Atenas", 3500);
+				insertarCantonProvincia("Alajuela","Zarcero", 00);
+				insertarCantonProvincia("Limon","Limon", 00);
+				insertarCantonProvincia("Limon","Siquirres", 00);
+				insertarCantonProvincia("Cartago","Turrialba", 3500);
+				insertarCantonProvincia("San_Jose","San_Jose", 00);
+				insertarCantonProvincia("San_Jose","Perez_Zeledon", 00);
+				insertarCantonProvincia("San_Jose","Escazu", 00);
+				insertarCantonProvincia("San_Jose","Santa_Ana", 00);
+				insertarVentaProvincia("Puntarenas","Buenos_Aires", 9000, 2021);
+				insertarVentaProvincia("Puntarenas","Esparza", 0,0);
+				insertarVentaProvincia("Puntarenas","Esparza", 0,0);
+				insertarVentaProvincia("Puntarenas","Golfito", 00,2017);
+				insertarVentaProvincia("Alajuela","Grecia", 00,0);
+				insertarVentaProvincia("Alajuela","Atenas", 3500,0);
+				insertarVentaProvincia("Alajuela","Zarcero", 00,0);
+				insertarVentaProvincia("Alajuela","Zarcero", 00,0);
+				insertarVentaProvincia("Limon","Limon", 00,0);
+				insertarVentaProvincia("Limon","Limon", 00,0);
+				insertarVentaProvincia("Limon","Limon", 00,0);
+				insertarVentaProvincia("Limon","Siquirres", 00,0);
+				insertarVentaProvincia("Limon","Siquirres", 00,0);
+				
+				insertarVentaProvincia("Cartago","Turrialba", 3500,0);
+				insertarVentaProvincia("Cartago","Turrialba", 3500,0);
+				insertarVentaProvincia("Cartago","Turrialba", 3500,0);
+				insertarVentaProvincia("Cartago","Turrialba", 3500,0);
+				insertarVentaProvincia("Cartago","Turrialba", 3500,0);
+
+				insertarVentaProvincia("San_Jose","San_Jose", 00,0);
+				insertarVentaProvincia("San_Jose","San_Jose", 00,0);
+				insertarVentaProvincia("San_Jose","Perez_Zeledon", 00,0);
+				insertarVentaProvincia("San_Jose","Perez_Zeledon", 00,0);
+				insertarVentaProvincia("San_Jose","Perez_Zeledon", 00,0);
+				insertarVentaProvincia("San_Jose","Perez_Zeledon", 00,0);
+				insertarVentaProvincia("San_Jose","Escazu", 00,0);
+				insertarVentaProvincia("San_Jose","Escazu", 00,0);
+				insertarVentaProvincia("San_Jose","Santa_Ana", 00,0);
+				
+
 				break;
 			case 2:
-				cout<<"dijite el  nombre"<<endl;
-				cin>>nomb;
-				cout<<"dijite el  monto de la venta"<<endl;
-				cin>>mont;
-				insertarVentaNomb(ini, nomb, mont);
-				cout<<endl;
-				//mostrarDatosCompletos(ini);
+				mostrarVentaProvincia("Puntarenas");
+				mostrarVentaProvincia("Alajuela");
+				mostrarVentaProvincia("Limon");
+				mostrarVentaProvincia("Cartago");
+				mostrarVentaProvincia("San_Jose");
 				break;
 			case 3:
-				mostrarDatosCompletos(ini);
+				sumarVentasCanton();
+				sumarVentasProvincia();
 				break;
 			case 4:
-				cout<<"dijite el  nombre"<<endl;
-				cin>>nomb;
-				mostrarVentaEmp(ini, nomb);
-				cout<<endl;
+				eliminarAnnos("Puntarenas","Golfito",2017); 
+				sumarVentasCanton();
+				sumarVentasProvincia();
 				break;
 			case 5:
-				mostrarEmpleadosR(ini);
-				break;
-			case 6:
-				insertarEmpleados(ini, "Marcos");
-				insertarVentaNomb(ini, "Marcos", 1500);
-				insertarVentaNomb(ini, "Marcos", 2500);
-				insertarVentaNomb(ini, "Marcos", 1800);
-				insertarEmpleados(ini, "Alondra");
-				insertarVentaNomb(ini, "Alondra", 2100);
-				insertarVentaNomb(ini, "Alondra", 5000);
-				insertarEmpleados(ini, "Pedro");
-				insertarVentaNomb(ini, "Pedro", 500);
-				insertarEmpleados(ini, "Maria");
-				insertarVentaNomb(ini, "Maria", 2000);
-				insertarVentaNomb(ini, "Maria", 800);
-				break;
-			case 7:
-				cout<<"dijite el  nombre"<<endl;
-				cin>>nomb;
-				sumarVentasEmpleado(ini, nomb);
-				cout<<endl;
-				break;
-			case 8:
-				sumarVentasEmpresa(ini);
-				break;
-			case 9:
 				break;
 			}
 			system("PAUSE"); 
-		} while(opc!=9);
+		} while(opc!=5);
 		
-	} */
+	} 
 	
 	return 0;
 }
