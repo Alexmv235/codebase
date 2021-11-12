@@ -5,36 +5,79 @@ struct ventas
 {
 	int anno;
 	float monto;
-	ventas *sig;
-	ventas *ant;
+	ventas *sigv;
+	ventas *antv;
 
 	ventas()
 	{
-		sig = NULL;
-		ant = NULL;
+		anno = 0;
+		sigv = NULL;
+		antv = NULL;
 	}
-	void setSigVen(ventas *s) { sig = s; }
-	void setAntVen(ventas *a) { ant = a; }
-	ventas *getSigVen() { return sig; }
-	ventas *getAntVen() { return ant; }
+	ventas(int annd, ventas *sv, ventas *av)
+	{
+		anno = annd;
+		sigv = sv;
+		antv = av;
+	}
+	void setSigVen(ventas *sv)
+	{
+		sigv = sv;
+	}
+	void setAntVen(ventas *av)
+	{
+		antv = av;
+	}
+	void setAnno(int annd)
+	{
+		anno = annd;
+	}
+	ventas *getSigVen()
+	{
+		return sigv;
+	}
+	ventas *getAntVen()
+	{
+		return antv;
+	}
+	//int getAnno() { return anno; }
 };
 struct cantones
 {
 	float ganCant;
 	string nombreCan;
-	cantones *sig;
-	cantones *ant;
+	cantones *sigc;
+	cantones *antc;
 	ventas *venta;
 
 	cantones()
 	{
-		sig = NULL;
-		ant = NULL;
+		nombreCan = "";
+		sigc = NULL;
+		antc = NULL;
 	}
-	void setSigCan(cantones *s) { sig = s; }
-	void setAntCan(cantones *a) { ant = a; }
-	cantones *getSigCan() { return sig; }
-	cantones *getAntCan() { return ant; }
+	cantones(string nombCant, cantones *sc, cantones *ac)
+	{
+		nombreCan = nombCant;
+		sigc = sc;
+		antc = ac;
+	}
+	void setSigCan(cantones *s)
+	{
+		sigc = s;
+	}
+	void setAntCan(cantones *a)
+	{
+		antc = a;
+	}
+	cantones *getSigCan()
+	{
+		return sigc;
+	}
+	cantones *getAntCan()
+	{
+		return antc;
+	}
 };
 struct provincias
 {
@@ -46,31 +89,54 @@ struct provincias
 
 	provincias()
 	{
+		nombreProv = "";
 		sig = NULL;
 		ant = NULL;
 	}
-	void setSigProv(provincias *s) { sig = s; }
-	void setAntProv(provincias *a) { ant = a; }
-	provincias *getSigProv() { return sig; }
-	provincias *getAntProv() { return ant; }
+	provincias(string nombProvin, provincias *s, provincias *a)
+	{
+		nombreProv = nombProvin;
+		sig = s;
+		ant = a;
+	}
+	void setSigProv(provincias *s)
+	{
+		sig = s;
+	}
+	void setAntProv(provincias *a)
+	{
+		ant = a;
+	}
+	provincias *getSigProv()
+	{
+		return sig;
+	}
+	provincias *getAntProv()
+	{
+		return ant;
+	}
 };
-provincias *ini = NULL, *aux = NULL;
-cantones *iniCan = NULL, *auxc = NULL;
-ventas *datos = NULL, *auxv = NULL;
+provincias *ini = NULL, *aux = NULL, *PF = NULL;
+cantones *iniCan = NULL, *auxc = NULL, *CF = NULL;
+ventas *datos = NULL, *auxv = NULL, *VF = NULL;
 
 //Insertar Ventas
 void insertarVenta(ventas *&v, int m, int an)
 {
+
 	if (v == NULL)
 	{
 		v = new ventas;
 		v->monto = m;
 		v->anno = an;
-		v->sig = NULL;
+		v->sigv = NULL;
+		v->antv = VF;
 	}
 	else
 	{
-		insertarVenta(v->sig, m, an);
+		VF = v;
+		insertarVenta(v->sigv, m, an);
+		VF = NULL;
 	}
 }
 //Mostrar ventas
@@ -79,9 +145,9 @@ void mostrarVentas(ventas *v)
 	cout << "		";
 	while (v != NULL)
 	{
-		cout << v->monto << "(" << v->anno << ")"
+		cout << v->anno << "(" << v->monto << ")"
 			 << " -> ";
-		v = v->sig;
+		v = v->sigv;
 	}
 	cout << "NULL" << endl;
 }
@@ -94,11 +160,14 @@ void insertarProvincia(provincias *&p, string n, float gp)
 		p->nombreProv = n;
 		p->ganProv = gp;
 		p->sig = NULL;
+		p->ant = PF;
 		p->canton = NULL;
 	}
 	else
 	{
+		PF = p;
 		insertarProvincia(p->sig, n, gp);
+		PF = NULL;
 	}
 }
 //Insertar un canton
@@ -109,12 +178,15 @@ void insertarCanton(cantones *&c, string n, float gc)
 		c = new cantones;
 		c->nombreCan = n;
 		c->ganCant = gc;
-		c->sig = NULL;
+		c->sigc = NULL;
+		c->antc = CF;
 		c->venta = NULL;
 	}
 	else
 	{
-		insertarCanton(c->sig, n, gc);
+		CF = c;
+		insertarCanton(c->sigc, n, gc);
+		CF = NULL;
 	}
 }
 //Insertar canton en una provincia
@@ -131,6 +203,7 @@ void insertarCantonProvincia(string nonProv, string nonCant, float gc)
 		}
 		aux = aux->sig;
 	}
+	//CF=NULL;
 	if (band == false)
 	{
 		cout << "La provincia no existe" << endl;
@@ -141,6 +214,7 @@ void insertarVentaCanton(cantones *c, string nombCan, int mont, int an)
 {
 	bool band = false;
 	auxc = c;
+	VF = NULL;
 	while (auxc != NULL)
 	{
 		if (auxc->nombreCan == nombCan)
@@ -148,7 +222,7 @@ void insertarVentaCanton(cantones *c, string nombCan, int mont, int an)
 			insertarVenta(auxc->venta, mont, an);
 			band = true;
 		}
-		auxc = auxc->sig;
+		auxc = auxc->sigc;
 	}
 	if (band == false)
 	{
@@ -184,7 +258,7 @@ void mostrarVentaCanton(cantones *c)
 	{
 		cout << "	" << auxc->nombreCan << "(" << auxc->ganCant << ")" << endl;
 		mostrarVentas(auxc->venta);
-		auxc = auxc->sig;
+		auxc = auxc->sigc;
 	}
 }
 //Mostrar ventas por Provincia ()
@@ -217,7 +291,7 @@ int sumar(ventas *v)
 	while (auxv != NULL)
 	{
 		sum = sum + auxv->monto;
-		auxv = auxv->sig;
+		auxv = auxv->sigv;
 	}
 	return sum;
 }
@@ -236,7 +310,7 @@ void sumarVentasCanton()
 				auxc->ganCant = sumar(auxc->venta);
 				cout << "el error se ha corregido" << endl;
 			}
-			auxc = auxc->sig;
+			auxc = auxc->sigc;
 		}
 		aux = aux->sig;
 	}
@@ -252,7 +326,7 @@ void sumarVentasProvincia()
 		while (auxc != NULL)
 		{
 			sumaTotProv = sumaTotProv + auxc->ganCant;
-			auxc = auxc->sig;
+			auxc = auxc->sigc;
 		}
 		if (aux->ganProv != sumaTotProv)
 		{
@@ -266,38 +340,61 @@ void sumarVentasProvincia()
 //Eliminar annos
 void eliminarAnnos(string nomProv, string nombCan, int an)
 {
+	ventas *auxvdel = NULL;
+
 	aux = ini;
+	auxv = datos;
 	auxc = iniCan;
+	auxvdel = datos;
 	while (aux != NULL)
 	{
 		if (aux->nombreProv == nomProv)
 		{
-			while (aux->canton != NULL)
+			auxc = aux->canton;
+			while (auxc != NULL)
 			{
-				if (aux->canton->nombreCan == nombCan)
+				if (auxc->nombreCan == nombCan)
 				{
-					while (aux->canton->venta != NULL)
+					auxv = auxc->venta;
+
+					while (auxv != NULL)
 					{
-						if (aux->canton->venta->anno == an && aux->canton->venta->getAntVen() == NULL)
+						if (auxv->anno == an)
 						{
-							//cout<<"es el primero"<<endl;
-							datos = aux->canton->venta->getSigVen();
+							if (auxv->antv == NULL)
+							{
+								auxvdel = auxv;
+								//cout << "es el primero" << endl;
+								auxvdel = auxv->sigv;
+								aux->canton->venta = auxvdel;
+							}
+							else if (auxv->sigv == NULL)
+							{
+								auxvdel = auxv;
+								//cout << "es el ultimo" << endl;
+								//Combinacion 211 si funciona
+								auxvdel = auxv->antv;
+								auxvdel->sigv = auxv->sigv;
+							}
+							else
+							{
+								auxvdel = auxv;
+
+								//<< "esta en la posision" << endl;
+								//cout << aux->nombreProv << auxc->nombreCan << auxvdel->anno << endl;
+								auxvdel = auxv->sigv;
+								auxvdel->antv = auxv->antv;
+								//auxv->getSigVen()->setAntVen(auxv->getAntVen());
+								auxvdel = auxv;
+								auxvdel = auxv->antv;
+								auxvdel->sigv = auxv->sigv;
+								//auxv->getAntVen()->setSigVen(auxv->getSigVen());
+							}
 						}
-						else if (aux->canton->venta->anno == an && aux->canton->venta->getSigVen() == NULL)
-						{
-							//cout<<"es el ultimo"<<endl;
-							//Combinacion 211 si funciona
-							aux->canton->venta->getAntVen()->setSigVen(aux->canton->venta->getSigVen());
-						}
-						else if (aux->canton->venta->anno == an)
-						{
-							aux->canton->venta->getSigVen()->setAntVen(aux->canton->venta->getAntVen());
-							aux->canton->venta->getAntVen()->setSigVen(aux->canton->venta->getSigVen());
-						}
-						aux->canton->venta = aux->canton->venta->sig;
+						auxv = auxv->sigv;
 					}
 				}
-				aux->canton = aux->canton->sig;
+				auxc = auxc->sigc;
 			}
 		}
 		aux = aux->sig;
@@ -306,6 +403,7 @@ void eliminarAnnos(string nomProv, string nombCan, int an)
 //Eliminar canton
 void eliminarCanton(string nomProv, string nombCan)
 {
+	cantones *auxcdel = NULL;
 	aux = ini;
 	while (aux != NULL)
 	{
@@ -319,51 +417,50 @@ void eliminarCanton(string nomProv, string nombCan)
 					auxv = auxc->venta;
 					while (auxv != NULL)
 					{
-						if (auxv->getAntVen() == NULL)
+						if (auxv->antv == NULL)
 						{
-							//cout<<"es el primero"<<endl;
-							datos = auxv->getSigVen();
+							aux->canton->venta = auxv->sigv;
 						}
-						else if (auxv->getSigVen() == NULL)
-						{
-							//cout<<"es el ultimo"<<endl;
-							//Combinacion 211 si funciona
-							auxv->getAntVen()->setSigVen(auxv->getSigVen());
-						}
-						else
-						{
-							auxv->getSigVen()->setAntVen(auxv->getAntVen());
-							auxv->getAntVen()->setSigVen(auxv->getSigVen());
-						}
-						auxv = auxv->sig;
-						//Canton
-						if (auxc->nombreCan == nombCan && auxc->getAntCan() == NULL)
-						{
-							cout << "es el primero" << endl;
-							iniCan = auxc->getSigCan();
-						}
-						else if (auxc->nombreCan == nombCan && auxc->getSigCan() == NULL)
-						{
-							//cout<<"es el ultimo"<<endl;
-							//Combinacion 211 si funciona
-							auxc->getAntCan()->setSigCan(auxc->getSigCan());
-						}
-						else if (auxc->nombreCan == nombCan)
-						{
-							auxc->getSigCan()->setAntCan(auxc->getAntCan());
-							auxc->getAntCan()->setSigCan(auxc->getSigCan());
-						}
+						auxv = auxv->sigv;
+					}
+					//cout<<"annos eliminados"<<endl;
+					//Canton
+					if (auxc->antc == NULL)
+					{
+						auxcdel = auxc;
+						auxcdel = auxc->sigc;
+						aux->canton = auxcdel;
+					}
+					else if (auxc->sigc == NULL)
+					{
+						auxcdel = auxc;
+						auxcdel = auxc->antc;
+						auxcdel->sigc = auxc->sigc;
+					}
+					else
+					{
+						auxcdel = auxc;
+						auxcdel = auxc->sigc;
+						auxcdel->antc = auxc->antc;
+						auxcdel = auxc;
+						auxcdel = auxc->antc;
+						auxcdel->sigc = auxc->sigc;
 					}
 				}
-				auxc = auxc->sig;
+			auxc = auxc->sigc;
 			}
+			//cout<<"canton eliminado"<<endl;
 		}
 		aux = aux->sig;
 	}
+	
 }
 //Eliminar provincia
 void eliminarProvincia(string nomProv)
 {
+	ventas *auxvdel = NULL;
+	cantones *auxcdel = NULL;
+	provincias *auxpdel = NULL;
 	aux = ini;
 	while (aux != NULL)
 	{
@@ -375,57 +472,74 @@ void eliminarProvincia(string nomProv)
 				auxv = auxc->venta;
 				while (auxv != NULL)
 				{
-					if (auxv->getAntVen() == NULL)
+					if (auxv->antv == NULL)
 					{
-						//cout<<"es el primero"<<endl;
-						datos = auxv->getSigVen();
+						auxvdel = auxv;
+						auxvdel = auxv->sigv;
+						aux->canton->venta = auxvdel;
 					}
-					else if (auxv->getSigVen() == NULL)
+					else if (auxv->sigv == NULL)
 					{
-						//cout<<"es el ultimo"<<endl;
-						//Combinacion 211 si funciona
-						auxv->getAntVen()->setSigVen(auxv->getSigVen());
+						auxvdel = auxv;
+						auxvdel = auxv->antv;
+						auxvdel->sigv = auxv->sigv;
 					}
 					else
 					{
-						auxv->getSigVen()->setAntVen(auxv->getAntVen());
-						auxv->getAntVen()->setSigVen(auxv->getSigVen());
+						auxvdel = auxv;
+						auxvdel = auxv->sigv;
+						auxvdel->antv = auxv->antv;
+						auxvdel = auxv;
+						auxvdel = auxv->antv;
+						auxvdel->sigv = auxv->sigv;
 					}
-					auxv = auxv->sig;
+				auxv = auxv->sigv;
 				}
 				//Canton
-				if (auxc->getAntCan() == NULL)
+				if (auxc->antc == NULL)
 				{
-					iniCan = auxc->getSigCan();
+					auxcdel = auxc;
+					auxcdel = auxc->sigc;
+					aux->canton = auxcdel;
 				}
-				else if (auxc->getSigCan() == NULL)
+				else if (auxc->sigc == NULL)
 				{
-					//cout<<"es el ultimo"<<endl;
-					//Combinacion 211 si funciona
-					auxc->getAntCan()->setSigCan(auxc->getSigCan());
+					auxcdel = auxc;
+					auxcdel = auxc->antc;
+					auxcdel->sigc = auxc->sigc;
 				}
 				else
 				{
-					auxc->getSigCan()->setAntCan(auxc->getAntCan());
-					auxc->getAntCan()->setSigCan(auxc->getSigCan());
+					auxcdel = auxc;
+					auxcdel = auxc->sigc;
+					auxcdel->antc = auxc->antc;
+					auxcdel = auxc;
+					auxcdel = auxc->antc;
+					auxcdel->sigc = auxc->sigc;
 				}
-				auxc = auxc->sig;
+				auxc = auxc->sigc;
 			}
 			//Provincia
-			if (aux->nombreProv == nomProv && aux->getAntProv() == NULL)
+			if (aux->ant == NULL)
 			{
-				ini = aux->getSigProv();
+				auxpdel = aux;
+				auxpdel = aux->sig;
+				ini = auxpdel;
 			}
-			else if (aux->nombreProv == nomProv && aux->getSigProv() == NULL)
+			else if (aux->sig == NULL)
 			{
-				//cout<<"es el ultimo"<<endl;
-				//Combinacion 211 si funciona
-				aux->getAntProv()->setSigProv(aux->getSigProv());
+				auxpdel = aux;
+				auxpdel = aux->ant;
+				auxpdel->sig = aux->sig;
 			}
 			else if (aux->nombreProv == nomProv)
 			{
-				aux->getSigProv()->setAntProv(aux->getAntProv());
-				aux->getAntProv()->setSigProv(aux->getSigProv());
+				auxpdel = aux;
+				auxpdel = aux->sig;
+				auxpdel->ant = aux->ant;
+				auxpdel = aux;
+				auxpdel = aux->ant;
+				auxpdel->sig = aux->sig;
 			}
 		}
 		aux = aux->sig;

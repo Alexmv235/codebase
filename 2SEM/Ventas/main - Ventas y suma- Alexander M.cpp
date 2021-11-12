@@ -15,7 +15,7 @@ struct empleados
 	empleados *ant;
 	ventas *venta;
 };
-empleados *ini=NULL, *aux=NULL;
+empleados *ini=NULL, *aux=NULL, *IE, *FE ;
 ventas *datos=NULL,*auxv=NULL;
 
 void insertarVenta(ventas *&v, int m)
@@ -25,6 +25,7 @@ void insertarVenta(ventas *&v, int m)
 		v=new ventas;
 		v->monto=m;
 		v->sig=NULL;
+	
 	}
 	else
 	{
@@ -59,7 +60,9 @@ void insertarEmpleados(empleados *&e, string n)
 		e=new empleados;
 		e->nombre=n;
 		e->sig=NULL;
+		e->ant=FE;
 		e->venta=NULL;
+		FE=e;
 	}
 	else
 	{
@@ -104,7 +107,7 @@ void insertarVentaNomb(string nomb, int mont)
 	}
 	if(band==false)
 	{
-		cout<<"El empleado no está registrado"<<endl;
+		cout<<"El empleado no esta registrado"<<endl;
 	}
 }
 //Mostrar Ventas de Un empleado
@@ -123,7 +126,7 @@ void mostrarVentaEmp(string nomb)
 	}
 	if(band==false)
 	{
-		cout<<"El empleado no está registrado"<<endl;
+		cout<<"El empleado no estï¿½ registrado"<<endl;
 	}
 }
 //Suma universal (para invocar)
@@ -154,7 +157,7 @@ void sumarVentasEmpleado(string nomb)
 	}
 	if(band==false)
 	{
-		cout<<"El empleado no está registrado"<<endl;
+		cout<<"El empleado no estï¿½ registrado"<<endl;
 	}
 }
 //Suma de toda la empresa
@@ -169,6 +172,25 @@ void sumarVentasEmpresa()
 	}
 	cout<<sumaTot<<endl;
 }
+//probar ant
+void antPrueba(empleados *e)
+{
+	while (e != NULL)
+	{
+		cout << e->nombre<< " -> ";
+		e = e->sig;
+		if(e->sig==NULL)
+		{
+			cout<<endl;
+			while(e!=NULL)
+			{
+				cout<<e->nombre<<" -> ";
+				e=e->ant;
+			}
+			cout<<endl;
+		}
+	}
+}	
 
 //MAIN
 int main (int argc, char *argv[]) {
@@ -184,7 +206,7 @@ int main (int argc, char *argv[]) {
 	}
 	cout<<endl;
 	system("CLS");
-	//Sesión
+	//Sesion
 	string s="";
 	cout<<"Inicio de sesion"<<endl; 
 	cout<<"- - - - - - - -"<<endl; 
@@ -209,7 +231,7 @@ int main (int argc, char *argv[]) {
 			cout<<"3-Mostrar todo"<<endl;
 			cout<<"4-Mostrar ventas de un empleado"<<endl;
 			cout<<"5-Mostrar empleados"<<endl;
-			cout<<"6-Agregar información predeterminada"<<endl;
+			cout<<"6-Agregar informaciï¿½n predeterminada"<<endl;
 			cout<<"7-Suma de ventas de un empleado"<<endl;
 			cout<<"8-Suma de ventas de toda la empresa"<<endl;
 			cout<<"9-Salir"<<endl;
@@ -270,10 +292,11 @@ int main (int argc, char *argv[]) {
 				sumarVentasEmpresa();
 				break;
 			case 9:
+				antPrueba(ini);
 				break;
 			}
 			system("PAUSE"); 
-		} while(opc!=9);
+		} while(opc!=10);
 		
 	}
 	
