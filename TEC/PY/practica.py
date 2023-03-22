@@ -12,3 +12,5 @@ def c_aux(lista):
         return c_aux(lista[1:])
     else:
         return c_aux(lista[1:])
+
+print(clasificar(["M-43","F-23","F-48","F-31","M-65","M-18","M-48"]))
