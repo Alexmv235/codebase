@@ -1,0 +1,22 @@
+#1 PARCIAL
+
+#EJ2:
+def multipicar(patron,multiplicador,original):
+    return fun(patron,multiplicador,original)
+
+def fun(patron,multiplicador,original):
+    x=0
+    return aux(patron,multiplicador,original,x)
+
+def aux(patron,multiplicador,original,x):
+    if original==[]:
+        return []
+    else:
+        if len(patron)>x:
+            if original[0]==patron[x]:
+                return [patron[x]*multiplicador[x]]+aux(patron,multiplicador,original[1:],0)
+            else:
+                return aux(patron,multiplicador,original,x+1)
+        else:
+            return [original[0]]+aux(patron,multiplicador,original[1:],0)
+            
