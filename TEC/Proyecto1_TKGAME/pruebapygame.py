@@ -88,9 +88,9 @@ class game_scr():
             dt = clock.tick(60) / 1000
         pygame.quit()
 
-#ventana_principal=Menu()
+ventana_principal=Menu()
 
-screen = pygame.display.set_mode((1280, 720))
+'''screen = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption('jUEGO')
 clock = pygame.time.Clock()
 running = True
@@ -135,4 +135,4 @@ while running:
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
     dt = clock.tick(60) / 1000
-pygame.quit()
+pygame.quit()'''
