@@ -1,0 +1,9 @@
+#Documentación de pygame
+https://www.pygame.org/docs/
+
+#BG in pygame
+https://stackoverflow.com/questions/28005641/how-to-add-a-background-image-into-pygame
+
+#IMG in pygame
+https://pythonprogramming.net/displaying-images-pygame/
+
