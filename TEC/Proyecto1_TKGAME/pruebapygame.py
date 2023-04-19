@@ -3,9 +3,9 @@ import pygame
 from gamescreen import game_scr
 
 # pygame setup
-pygame.init()
 
 def menu():
+        pygame.init()
         screen = pygame.display.set_mode((1280, 715))
         pygame.display.set_caption('Alex pygame')
         clock = pygame.time.Clock()
@@ -21,7 +21,7 @@ def menu():
             screen.fill("blue")
 
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_COMMA] or keys[pygame.K_w]:
+            if keys[pygame.K_COMMA]:
                 game_scr()
 
             # flip() the display to put your work on screen
