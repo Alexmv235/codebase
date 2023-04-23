@@ -272,14 +272,6 @@ def game_scr(nomb,rang):
             if keys[pygame.K_COMMA]:
                 GameOver.kill()
     
-    class Information(pygame.sprite.Sprite):
-        def __init__(self):
-            super().__init__()
-            self.image = pygame.Surface((screen.get_width()//4,100))
-            self.image.fill("orange")
-
-            self.rect=self.image.get_rect()
-            self.rect.center=(screen.get_width()//2,50)
 
 
     sprites=pygame.sprite.Group()
@@ -292,7 +284,6 @@ def game_scr(nomb,rang):
     goscreen=pygame.sprite.Group()
     game_st=pygame.sprite.Group()
     informacion=pygame.sprite.Group()
-    informacion.add(Information())
     
     while running:
         # poll for events
@@ -307,7 +298,7 @@ def game_scr(nomb,rang):
         bg=pygame.image.load(os.path.join("space2.gif"))
         bgs=pygame.transform.scale(bg,(1280,680))
         screen.blit(bgs,(0,00))
-
+        '''
         font = pygame.font.SysFont("comicsans", 30, True)
         score= font.render("Score: " + str(puntaje), 1, (254,254,254))
         screen.blit(score, (390, 10))
@@ -318,7 +309,7 @@ def game_scr(nomb,rang):
         screen.blit(vida, (20, 50))
 
         lev= font.render("Dificultad: " + str(dificulty), 1, (254,254,254))
-        screen.blit(lev, (600, 10))
+        screen.blit(lev, (600, 10))'''
 
                            
 
