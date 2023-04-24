@@ -1,5 +1,30 @@
 Jugador: 
-Alex
+juanp
 Puntaje:
-990
+700
+- - - - - - - - - - - - - -
+Jugador: 
+ricardo
+Puntaje:
+930
+- - - - - - - - - - - - - -
+Jugador: 
+Holanda
+Puntaje:
+770
+- - - - - - - - - - - - - -
+Jugador: 
+Nombre
+Puntaje:
+73880
+- - - - - - - - - - - - - -
+Jugador: 
+Alexmv
+Puntaje:
+64420
+- - - - - - - - - - - - - -
+Jugador: 
+a
+Puntaje:
+750
 - - - - - - - - - - - - - -

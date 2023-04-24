@@ -1,4 +1,9 @@
-# Example file showing a circle moving on screen
+#Proyecto Taller de Progra- CE1102
+#Elaborado por:
+#Alexander Montero Vargas
+#Carne: 2023166058
+
+import pydoc
 import sys
 import pygame
 import random
@@ -10,99 +15,65 @@ from obener_scores import ordenar_lista, obtenerPunt, obtenerNomb
 
 # pygame setup
 
-
+#Pantalla de inicio
 def mainscr():
     class Ventana_Principal:
     
     #Funcion con los elementos visuales de la pantalla principal
-        def __init__(self,master,theme):
+        def __init__(self,master):
             self.v= IntVar()
-            self.theme= theme
             self.bgcolor=''
             self.elcolor=''
             self.print=False
-            self.themecolors()
 
+            self.bg = PhotoImage(file="space2.gif").zoom(4, 4)
+            self.canvas = Canvas(master, width=1280,
+                             height=715)
+            self.canvas.pack(fill="both", expand=True)
+
+            self.canvas.create_image(0, 0, image=self.bg,
+                                 anchor="nw")
+            self.canvas.create_text(600, 50, text="Space Game",font=(
+                "Times New Roman", 36),fill="white")
+            self.canvas.create_text(600, 100, text="Por jugar dijite un nombre",font=(
+                "Times New Roman", 22),fill="white")
             
-            self.canvas = Canvas(master,width=500,height=300,highlightthickness=0,relief='ridge',background=self.bgcolor)
-            self.canvas.place(x=0,y=0)
-
-            self.label_bienv = Label(self.canvas, text="!Juego de adivinanza!", font= ("Cascadia Code",25),bg=self.bgcolor,fg=self.elcolor)
-            self.label_bienv.place(x=80, y=10)
-
-            self.label_Nom = Label(self.canvas, text="Por favor digite su nombre: ", font= ("Cascadia Code",10),bg=self.bgcolor,fg=self.elcolor)
-            self.label_Nom.place(x=30, y=70)
-
-            self.lab_select = Label(self.canvas, text="Seleccione un rango para jugar: ", font= ("Cascadia Code",9),bg=self.bgcolor,fg=self.elcolor)
-            self.lab_select.place(x=25, y=120)
-
             self.entrada_nombre = Entry(self.canvas)
-            self.entrada_nombre.place(x=250, y=67, width=150, height=32)
+            self.entrada_nombre.place(x=400, y=140, width=400, height=32)
 
-            self.radio1 = Radiobutton(self.canvas, variable=self.v, value=1, bg=self.bgcolor)
-            self.radio1.place(x=250, y=120)
+            self.canvas.create_text(600, 210, text="Seleccione una dificultad",font=(
+                "Times New Roman", 20),fill="white")
             
-            #El boton 1 es seleccionado por defecto, por lo que no hace falta verifiar si se seleccionó un rango
+            self.radio1 = Radiobutton(master, variable=self.v, value=1, text="Dificultad 1")
+            self.radio1_canvas = self.canvas.create_window( 450, 240, anchor = "nw",
+                                                window = self.radio1)
+            self.radio2 = Radiobutton(master, variable=self.v, value=2, text="Dificultad 2")
+            self.radio2_canvas = self.canvas.create_window( 550, 240, anchor = "nw",
+                                                window = self.radio2)
+            self.radio3 = Radiobutton(master, variable=self.v, value=3, text="Dificultad 3")
+            self.radio3_canvas = self.canvas.create_window( 650, 240, anchor = "nw",
+                                                window = self.radio3)
+            
+            #El boton 1 es seleccionado por defecto, por lo que no hace falta verifiar si se seleccionó una dificultad
             self.radio1.select()
-            self.lab_radio1 = Label(self.canvas, text="1",bg=self.bgcolor,fg=self.elcolor)
-            self.lab_radio1.place(x=275, y=120)
             
+            self.button_Jugar = Button(self.canvas, text="Jugar", command= self.pass_data, bg= "white")
+            self.button_Jugar.place(x=525, y=320, width=150, height=30)
+            self.button_Mejores = Button(self.canvas, text="Mejores Puntajes", command= self.pshow, bg= "white")
+            self.button_Mejores.place(x=525, y=360, width=150, height=30)
+            self.button_Acerca = Button(self.canvas, text="Acerca del Juego", command= self.acercaShow, bg= "white")
+            self.button_Acerca.place(x=525, y=400, width=150, height=30)
+            self.button_Salir = Button(self.canvas, text="Salir", command= self.salir, bg= "white")
+            self.button_Salir.place(x=525, y=440, width=150, height=30)
 
-            self.radio2 = Radiobutton(self.canvas,variable=self.v, value=2, bg=self.bgcolor)
-            self.radio2.place(x=350, y=120)
-            self.lab_radio2 = Label(self.canvas, text="2",bg=self.bgcolor,fg=self.elcolor)
-            self.lab_radio2.place(x=375, y=120)
-            
-            self.radio3 = Radiobutton(self.canvas,variable=self.v, value=3, bg=self.bgcolor)
-            self.radio3.place(x=350, y=150)
-            self.lab_radio3 = Label(self.canvas, text="3",bg=self.bgcolor,fg=self.elcolor)
-            self.lab_radio3.place(x=375, y=150)
+            self.label_Error = Label(self.canvas, text="", font= ("Cascadia Code",12),fg="#B3261E")
+            self.label_Error.place(x=800, y=140,height=32)
 
-            self.button_mostrar = Button(self.canvas, text="Jugar", command= self.pass_data, bg= "white")
-            self.button_mostrar.place(x=170, y=160, width=150, height=30)
-
-            self.label_Error = Label(self.canvas, text="", font= ("Cascadia Code",12),fg="#B3261E", bg=self.bgcolor)
-            self.label_Error.place(x=150, y=200)
-
-            #Adicional: Un boton para elegir si imprimir en consola el numero generado random, con fines de revision rapida
-            self.print_button= Button(self.canvas, text="(dev)Imprimir en consola: "+str(self.print),font= ("Cascadia Code",10), bg='#ba1a1a', fg='white', command=self.print_fun)
-            self.print_button.place(x=200, y=250, width=260, height=30)
-
-            #Adicional, un boton que llama a una funcion para cambiar el tema del app
-            self.theme_button= Button(self.canvas, text="Cambiar tema", bg=self.elcolor, fg=self.bgcolor, command=self.cambiar_tem)
-            self.theme_button.place(x=15, y=250, width=150, height=30)
-        
-        #Funcion que define si se deve o no imprimir en consola el numero generado
-        def print_fun(self):
-            if self.print==False:
-                self.print=True
-                self.print_button['text']="(dev)Imprimir en consola: "+str(self.print)
-                self.print_button['bg']='#386664'
-            else:
-                self.print=False
-                self.print_button['text']="(dev)Imprimir en consola: "+str(self.print)
-                self.print_button['bg']='#ba1a1a'
-        
-        #Funcion para cammbiar el color del tema
-        def cambiar_tem(self):
-            if self.theme=='#FFFBFE':
-                Ventana_Principal(Window,'#1C1B1F')
-            else:
-                Ventana_Principal(Window,'#FFFBFE')
-
-        #Funcion que establece los valores de los colores para los elementos
-        def themecolors(self):
-            if self.theme=='#FFFBFE':
-                self.bgcolor='#FFFBFE'
-                self.elcolor='#1C1B1F'
-            else:
-                self.bgcolor='#1C1B1F'
-                self.elcolor='#E6E1E5'
-        #Funcion que al presionar el boton jugar, obtiene los valores de las funciones y las envia a la seguda pantalla
+        #Funcion que al presionar el boton jugar, obtiene los valores de las funciones y las envia a la pantalla de juego (pygame)
         def pass_data(self):
             nomb=self.entrada_nombre.get()
             ranges=self.v.get()
-            #Verificador que el nombre no es vacio y que hay un rango seleccionado
+            #Verificador que el nombre no es vacio y que hay una dificultad
             if nomb != '':
                 if ranges !=None and ranges!=0:
                     Window.destroy()
@@ -111,12 +82,31 @@ def mainscr():
                     self.label_Error['text']='Seleccione un rango'
             else:
                 self.label_Error['text']='Ingrese un nombre'
-    
-    class Best7:
-        def __init__(self, master, puntajes, nombres):
+        #Funcion para mostrar los mejores resultados
+        def pshow(self):
+            Window.destroy()
+            bestscores()
 
-            self.puntajes = puntajes
-            self.nombres = nombres
+        def acercaShow(self):
+            Window.destroy()
+            acercade()
+        def salir(self):
+            Window.destroy()
+    
+    #Propiedades de la ventana
+    Window=Tk()
+    ventana_principal=Ventana_Principal(Window)
+    Window.title("Main - Space Game")
+    Window.minsize(500,300)
+    Window.resizable(False,False)
+    Window.mainloop()
+
+#Pantalla de mejores puntuaciones
+def bestscores():
+    class Best7:
+        def __init__(self, master):
+
+            self.puntajes, self.nombres = ordenar_lista(obtenerPunt(), obtenerNomb())
 
             self.bg = PhotoImage(file="space2.gif").zoom(4, 4)
 
@@ -133,14 +123,20 @@ def mainscr():
             # Add Text
             self.canvas.create_text(400, 15, text="Los Mejores Puntajes",font=(
                 "Times New Roman", 24),fill="white")
-            self.canvas.create_text(150, 50, text="Posicion",font=(
+            self.canvas.create_text(150, 50, text="Posicion:",font=(
                 "Times New Roman", 16),fill="white")
-            self.canvas.create_text(250, 50, text="Nombre",font=(
+            self.canvas.create_text(250, 50, text="Nombre:",font=(
                 "Times New Roman", 16),fill="white")
-            self.canvas.create_text(640, 50, text="Puntaje",font=(
+            self.canvas.create_text(640, 50, text="Puntaje:",font=(
                 "Times New Roman", 16),fill="white")
+            
+            self.button_Jugar = Button(self.canvas, text="Volver al menu", command= self.back, bg= "white")
+            self.button_Jugar.place(x=900, y=50, width=150, height=30)
            
             self.showResults()
+        def back(self):
+            Window.destroy()
+            mainscr()
 
         def showResults(self):
             return self.auxShw(self.puntajes, self.nombres, 80, 0)
@@ -155,48 +151,74 @@ def mainscr():
                     "Times New Roman", 16),fill="white")
 
                 self.auxShw(puntajes, nombres, posy+30, i+1)
-
-    puntajes, nombres = ordenar_lista(obtenerPunt(), obtenerNomb())
     #Propiedades de la ventana
     Window=Tk()
-    ventana_principal=Ventana_Principal(Window,'#FFFBFE')
-    Window.title("Adivinanzas - Alex TK")
+    ventana_principal=Best7(Window)
+    Window.title("Mejores Puntajes - Space Game")
     Window.minsize(500,300)
     Window.resizable(False,False)
     Window.mainloop()
 
-def menu():
-        pygame.init()
-        screen = pygame.display.set_mode((1280, 715))
-        pygame.display.set_caption('Alex pygame')
-        clock = pygame.time.Clock()
-        running = True
-        
-        while running:
-            # poll for events
-            # pygame.QUIT event means the user clicked X to close your window
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                    #pygame.quit()
-                    sys.exit()
+def acercade():
+    class Acrca:
+    
+    #Funcion con los elementos visuales de la pantalla principal
+        def __init__(self,master):
+            self.v= IntVar()
+            self.bgcolor=''
+            self.elcolor=''
+            self.print=False
 
-            # fill the screen with a color to wipe away anything from last frame
-            screen.fill("blue")
+            self.bg = PhotoImage(file="space2.gif").zoom(4, 4)
+            self.canvas = Canvas(master, width=1280,
+                             height=715)
+            self.canvas.pack(fill="both", expand=True)
 
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_COMMA]:
-                running=False
-                game_scr()
+            self.canvas.create_image(0, 0, image=self.bg,
+                                 anchor="nw")
+            self.canvas.create_text(600, 50, text="Space Game",font=(
+                "Times New Roman", 36),fill="white")
+            
+            self.canvas.create_text(200, 100, text="Juego elaborado por:",font=(
+                "Times New Roman", 22),fill="white")
+            self.canvas.create_text(200, 150, text="Alexander Montero Vargas",font=(
+                "Times New Roman", 22),fill="white")
+            self.canvas.create_text(200, 200, text="Carné:2023166058",font=(
+                "Times New Roman", 22),fill="white")
+            self.canvas.create_text(800, 100, text="Instituto Tecnologico de Costa Rica",font=(
+                "Times New Roman", 22),fill="white")
+            self.canvas.create_text(800, 150, text="Taller de Programación (CE1102)",font=(
+                "Times New Roman", 22),fill="white")
+            self.canvas.create_text(800, 200, text="Ingeniería en Computadores",font=(
+                "Times New Roman", 22),fill="white")
+            self.canvas.create_text(800, 250, text="Año 2023",font=(
+                "Times New Roman", 22),fill="white")
+            self.canvas.create_text(800, 300, text="Profesor: Luis Barboza",font=(
+                "Times New Roman", 22),fill="white")
+            self.canvas.create_text(800, 350, text="Costa Rica",font=(
+                "Times New Roman", 22),fill="white")
+            self.canvas.create_text(800, 400, text="Version: 0.1.1 beta",font=(
+                "Times New Roman", 22),fill="white")
+            
+            self.autor = PhotoImage(file="autor.png").subsample(10,10)
+            self.label_logo = Label(self.canvas, image=self.autor)
+            self.label_logo.place(x=100,y=300)
 
-            # flip() the display to put your work on screen
-            pygame.display.update()
-
-            # limits FPS to 60
-            # dt is delta time in seconds since last frame, used for framerate-
-            # independent physics.
-            dt = clock.tick(60) / 1000
-        pygame.quit()
+            self.button_Jugar = Button(self.canvas, text="Volver al menu", command= self.back, bg= "white")
+            self.button_Jugar.place(x=900, y=500, width=150, height=30)
+       
+        def back(self):
+            Window.destroy()
+            mainscr()
+            
+    
+    #Propiedades de la ventana
+    Window=Tk()
+    ventana_principal=Acrca(Window)
+    Window.title("Acerca de - Space Game")
+    Window.minsize(500,300)
+    Window.resizable(False,False)
+    Window.mainloop()
         
 def game_scr(nomb,rang):
     pygame.init()
@@ -206,9 +228,9 @@ def game_scr(nomb,rang):
     screen = pygame.display.set_mode((1280, 680))
     pygame.display.set_caption('jUEGO')
     clock = pygame.time.Clock()
-    pygame.mixer.music.load("dwtd.mp3")
+    pygame.mixer.music.load("spci.mp3")
     pygame.mixer.music.set_volume(0.7)
-    #pygame.mixer.music.play()
+    pygame.mixer.music.play(-1)
 
     running = True 
     tiempo_enemigo=0
@@ -235,8 +257,7 @@ def game_scr(nomb,rang):
         def __init__(self):
             super().__init__()
             self.time=0
-            self.image = pygame.Surface((75, 75))
-            self.image.fill("green")
+            self.image = self.image=pygame.transform.scale(pygame.image.load(os.path.join("ovni.png")),(75,75))
 
             self.rect=self.image.get_rect()
             self.rect.center=(random.randrange(screen.get_width(),screen.get_width()+301,150),random.randrange(150,screen.get_height()-100,30))
@@ -329,31 +350,14 @@ def game_scr(nomb,rang):
             if (time.time()-self.time)>tiempo_enem-1: #and len(balas.sprites())<3
                 self.time=time.time()
                 balas.add(Bala(self.rect.right,self.rect.centery))
-
-    class GameOver(pygame.sprite.Sprite):
-        def __init__(self):
-            super().__init__()
-            self.image = pygame.Surface((700, 400))
-            self.image.fill("orange")
-
-            self.rect=self.image.get_rect()
-            self.rect.center=(screen.get_width()//2,screen.get_height()//2)
-            
-        def update(self):
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_COMMA]:
-                GameOver.kill()
     
     sprites=pygame.sprite.Group()
     jugador=Player()
     sprites.add(jugador)
     balas=pygame.sprite.Group()
     enems=pygame.sprite.Group()
-    #enems.add(Enemigo())
     balase=pygame.sprite.Group()
-    goscreen=pygame.sprite.Group()
-    game_st=pygame.sprite.Group()
-    informacion=pygame.sprite.Group()
+    
     
     while running:
         # poll for events
@@ -410,21 +414,26 @@ def game_scr(nomb,rang):
             vidas-=1
             print("vidas",vidas)
 
-        if vidas==0 or enemigos_elm==objetivo:
+        if vidas==0:
             if not gover:
                 gover=True
-                print(puntaje)
-                guardar_resultados(pname,puntaje)
-                #pygame.mixer.music.stop()
-                #pygame.mixer.quit()
-                #srunning=False
-                #menu()
-                '''print("game over")
-                goscreen.add(GameOver())
-                gover=True'''
+                pygame.display.quit()
+                pygame.mixer.music.stop()
+                pygame.mixer.quit()
+                perdiste(pname,puntaje,dificulty)
+                pygame.quit()
+                break
+        
+        if enemigos_elm==objetivo:
+            gover=True
+            guardar_resultados(pname,puntaje)
+            running=False
+            pygame.display.quit()
+            ganaste(pname,puntaje,dificulty)
+            pygame.quit()
+            break
 
-        goscreen.draw(screen)
-        goscreen.update()
+
         sprites.update()
         sprites.draw(screen)
         balas.update()
@@ -458,5 +467,115 @@ def game_scr(nomb,rang):
         # independent physics.
         clock.tick(60)
     pygame.quit()
+
+
+
+# Funcion que muestra que ganó
+def ganaste(Nombre,puntaje,dificultad):
+    class YouWIn:
+        def __init__(self, master):
+
+            self.puntajes, self.nombres = ordenar_lista(obtenerPunt(), obtenerNomb())
+
+            self.bg = PhotoImage(file="space2.gif").zoom(4, 4)
+
+            # Create Canvas
+            self.canvas = Canvas(master, width=1280,
+                             height=715)
+
+            self.canvas.pack(fill="both", expand=True)
+
+            # Display image
+            self.canvas.create_image(0, 0, image=self.bg,
+                                 anchor="nw")
+
+            # Add Text
+            self.canvas.create_text(600,100, text="Ganaste",font=(
+                "Times New Roman", 33),fill="white")
+            
+            self.button_Jugar = Button(self.canvas, text="Volver al menu", command= self.back, bg= "white")
+            self.button_Jugar.place(x=300, y=500, width=150, height=30)
+            self.button_Jugar = Button(self.canvas, text="Siguiente Nivel", command= self.continu, bg= "white")
+            self.button_Jugar.place(x=700, y=500, width=150, height=30)
+           
+            self.showResults()
+        
+        def continu(self):
+            if dificultad!=3:
+                Window.destroy()
+                game_scr(Nombre,dificultad+1)
+            else:
+                Window.destroy()
+                game_scr(Nombre,dificultad)
+        
+        def back(self):
+            Window.destroy()
+            mainscr()
+
+        def showResults(self):
+            return self.auxShw(self.puntajes, self.nombres, 0)
+
+        def auxShw(self, puntajes, nombres, i):
+            if puntajes != [] and i < 7 and i < len(puntajes):
+                if puntajes[i]== puntaje and nombres[i]==Nombre:
+                    self.canvas.create_text(550, 200, text="Has obtenido un nuevo puntaje",font=(
+                    "Times New Roman", 30),fill="white")
+                    self.canvas.create_text(550, 250, text="Posición :"+str(i+1),font=(
+                        "Times New Roman", 16),fill="white")
+                    self.canvas.create_text(550, 300, text="Puntos: "+ str(puntajes[i]),font=(
+                        "Times New Roman", 16),fill="white")
+                self.auxShw(puntajes, nombres, i+1)
+    #Propiedades de la ventana
+    Window=Tk()
+    ventana_principal=YouWIn(Window)
+    Window.title("Mejores Puntajes - Space Game")
+    Window.minsize(500,300)
+    Window.resizable(False,False)
+    Window.mainloop()
+
+
+def perdiste(Nombre,puntaje,dificultad):
+    class YouLose:
+        def __init__(self, master):
+
+            self.bg = PhotoImage(file="space2.gif").zoom(4, 4)
+
+            # Create Canvas
+            self.canvas = Canvas(master, width=1280,
+                             height=715)
+
+            self.canvas.pack(fill="both", expand=True)
+
+            # Display image
+            self.canvas.create_image(0, 0, image=self.bg,
+                                 anchor="nw")
+
+            # Add Text
+            self.canvas.create_text(600,100, text="Perdiste",font=(
+                "Times New Roman", 33),fill="white")
+            
+            self.button_Jugar = Button(self.canvas, text="Volver al menu", command= self.back, bg= "white")
+            self.button_Jugar.place(x=300, y=500, width=150, height=30)
+            self.button_Jugar = Button(self.canvas, text="Volver a jugar", command= self.continu, bg= "white")
+            self.button_Jugar.place(x=700, y=500, width=150, height=30)
+           
+        
+        def continu(self):
+            Window.destroy()
+            game_scr(Nombre,dificultad)
+                
+        
+        def back(self):
+            Window.destroy()
+            mainscr()
+
+    #Propiedades de la ventana
+    Window=Tk()
+    ventana_principal=YouLose(Window)
+    Window.title("Mejores Puntajes - Space Game")
+    Window.minsize(500,300)
+    Window.resizable(False,False)
+    Window.mainloop()
+
 
 mainscr()
