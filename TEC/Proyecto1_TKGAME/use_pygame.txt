@@ -7,3 +7,8 @@ https://stackoverflow.com/questions/28005641/how-to-add-a-background-image-into-
 #IMG in pygame
 https://pythonprogramming.net/displaying-images-pygame/
 
+#Elementos Graficos de tkinter
+https://www.geeksforgeeks.org/how-to-use-images-as-backgrounds-in-tkinter/
+
+#Ordenar listas con el método de burbuja
+https://www.geeksforgeeks.org/merge-sort/

@@ -5,6 +5,8 @@ import random
 import os
 import time
 from tkinter import *
+from scores import guardar_resultados
+from obener_scores import ordenar_lista, obtenerPunt, obtenerNomb
 
 # pygame setup
 
@@ -42,14 +44,19 @@ def mainscr():
             
             #El boton 1 es seleccionado por defecto, por lo que no hace falta verifiar si se seleccionó un rango
             self.radio1.select()
-            self.lab_radio1 = Label(self.canvas, text="0-100",bg=self.bgcolor,fg=self.elcolor)
+            self.lab_radio1 = Label(self.canvas, text="1",bg=self.bgcolor,fg=self.elcolor)
             self.lab_radio1.place(x=275, y=120)
             
 
             self.radio2 = Radiobutton(self.canvas,variable=self.v, value=2, bg=self.bgcolor)
             self.radio2.place(x=350, y=120)
-            self.lab_radio1 = Label(self.canvas, text="0-1000",bg=self.bgcolor,fg=self.elcolor)
-            self.lab_radio1.place(x=375, y=120)
+            self.lab_radio2 = Label(self.canvas, text="2",bg=self.bgcolor,fg=self.elcolor)
+            self.lab_radio2.place(x=375, y=120)
+            
+            self.radio3 = Radiobutton(self.canvas,variable=self.v, value=3, bg=self.bgcolor)
+            self.radio3.place(x=350, y=150)
+            self.lab_radio3 = Label(self.canvas, text="3",bg=self.bgcolor,fg=self.elcolor)
+            self.lab_radio3.place(x=375, y=150)
 
             self.button_mostrar = Button(self.canvas, text="Jugar", command= self.pass_data, bg= "white")
             self.button_mostrar.place(x=170, y=160, width=150, height=30)
@@ -104,7 +111,52 @@ def mainscr():
                     self.label_Error['text']='Seleccione un rango'
             else:
                 self.label_Error['text']='Ingrese un nombre'
+    
+    class Best7:
+        def __init__(self, master, puntajes, nombres):
 
+            self.puntajes = puntajes
+            self.nombres = nombres
+
+            self.bg = PhotoImage(file="space2.gif").zoom(4, 4)
+
+            # Create Canvas
+            self.canvas = Canvas(master, width=1280,
+                             height=715)
+
+            self.canvas.pack(fill="both", expand=True)
+
+            # Display image
+            self.canvas.create_image(0, 0, image=self.bg,
+                                 anchor="nw")
+
+            # Add Text
+            self.canvas.create_text(400, 15, text="Los Mejores Puntajes",font=(
+                "Times New Roman", 24),fill="white")
+            self.canvas.create_text(150, 50, text="Posicion",font=(
+                "Times New Roman", 16),fill="white")
+            self.canvas.create_text(250, 50, text="Nombre",font=(
+                "Times New Roman", 16),fill="white")
+            self.canvas.create_text(640, 50, text="Puntaje",font=(
+                "Times New Roman", 16),fill="white")
+           
+            self.showResults()
+
+        def showResults(self):
+            return self.auxShw(self.puntajes, self.nombres, 80, 0)
+
+        def auxShw(self, puntajes, nombres, posy, i):
+            if puntajes != [] and i < 7 and i < len(puntajes):
+                self.canvas.create_text(150, posy, text=str(i+1),font=(
+                "Times New Roman", 16),fill="white")
+                self.canvas.create_text(250, posy, text=nombres[i],font=(
+                    "Times New Roman", 16),fill="white")
+                self.canvas.create_text(640, posy, text=puntajes[i],font=(
+                    "Times New Roman", 16),fill="white")
+
+                self.auxShw(puntajes, nombres, posy+30, i+1)
+
+    puntajes, nombres = ordenar_lista(obtenerPunt(), obtenerNomb())
     #Propiedades de la ventana
     Window=Tk()
     ventana_principal=Ventana_Principal(Window,'#FFFBFE')
@@ -160,7 +212,6 @@ def game_scr(nomb,rang):
 
     running = True 
     tiempo_enemigo=0
-    teeemp=0
 
     puntaje=0
     dificulty=rang
@@ -168,27 +219,43 @@ def game_scr(nomb,rang):
     enemigos_elm=0
     gover=False
     
+    if dificulty ==1:
+        objetivo=10
+        tiempo_enem=2.8
+    elif dificulty ==2:
+        tiempo_enem=2.2
+        objetivo=20
+    else:
+        tiempo_enem=1.6
+        objetivo=10
+
+    
 
     class Enemigo(pygame.sprite.Sprite):
         def __init__(self):
             super().__init__()
             self.time=0
-            self.image = pygame.Surface((100, 100))
+            self.image = pygame.Surface((75, 75))
             self.image.fill("green")
 
             self.rect=self.image.get_rect()
-            self.rect.center=(random.randrange(screen.get_width(),screen.get_width()+1500,1),random.randrange(150,screen.get_height()-100,150))
+            self.rect.center=(random.randrange(screen.get_width(),screen.get_width()+301,150),random.randrange(150,screen.get_height()-100,30))
         
         def update(self):
             if not gover:
                 self.shoot()
-                self.rect.x -=1
+                if dificulty==1:
+                    self.rect.x -=2
+                elif dificulty==2:
+                    self.rect.x -=4
+                else:
+                    self.rect.x -=6
 
                 if self.rect.right<=0:
                     self.kill()
         
         def shoot(self):
-            if (time.time()-self.time)>3: #and len(balas.sprites())<3
+            if (time.time()-self.time)>tiempo_enem-0.2: #and len(balas.sprites())<3
                 self.time=time.time()
                 balase.add(Bala_Enemigas(self.rect.left,self.rect.centery))
 
@@ -203,7 +270,12 @@ def game_scr(nomb,rang):
             
         def update(self):
             if not gover:
-                self.rect.x -=10
+                if dificulty==1:
+                    self.rect.x -=10
+                elif dificulty==2:
+                    self.rect.x-=13
+                else:
+                    self.rect.x -=16
                 if self.rect.right>=screen.get_width():
                     self.kill()
             else:
@@ -229,7 +301,7 @@ def game_scr(nomb,rang):
         def __init__(self):
             super().__init__()
             self.time=0
-            self.image=pygame.transform.scale(pygame.image.load(os.path.join("space-ship.png")),(100,100))
+            self.image=pygame.transform.scale(pygame.image.load(os.path.join("space-ship.png")),(75,75))
 
             self.rect=self.image.get_rect()
             self.rect.center=(screen.get_width()//14,screen.get_height()//2)
@@ -254,7 +326,7 @@ def game_scr(nomb,rang):
                     self.shoot()
         
         def shoot(self):
-            if (time.time()-self.time)>0.15: #and len(balas.sprites())<3
+            if (time.time()-self.time)>tiempo_enem-1: #and len(balas.sprites())<3
                 self.time=time.time()
                 balas.add(Bala(self.rect.right,self.rect.centery))
 
@@ -272,8 +344,6 @@ def game_scr(nomb,rang):
             if keys[pygame.K_COMMA]:
                 GameOver.kill()
     
-
-
     sprites=pygame.sprite.Group()
     jugador=Player()
     sprites.add(jugador)
@@ -298,7 +368,7 @@ def game_scr(nomb,rang):
         bg=pygame.image.load(os.path.join("space2.gif"))
         bgs=pygame.transform.scale(bg,(1280,680))
         screen.blit(bgs,(0,00))
-        '''
+        
         font = pygame.font.SysFont("comicsans", 30, True)
         score= font.render("Score: " + str(puntaje), 1, (254,254,254))
         screen.blit(score, (390, 10))
@@ -309,7 +379,13 @@ def game_scr(nomb,rang):
         screen.blit(vida, (20, 50))
 
         lev= font.render("Dificultad: " + str(dificulty), 1, (254,254,254))
-        screen.blit(lev, (600, 10))'''
+        screen.blit(lev, (600, 10))
+
+        elm= font.render("Enemigos Eliminados: " + str(enemigos_elm) +" / " + str(objetivo), 1, (254,254,254))
+        screen.blit(elm, (600, 50))
+
+        enemigos_en_pantalla= font.render("Enemigos en pantalla: " + str(len(enems.sprites())), 1, (254,254,254))
+        screen.blit(enemigos_en_pantalla, (800, 10))
 
                            
 
@@ -334,13 +410,15 @@ def game_scr(nomb,rang):
             vidas-=1
             print("vidas",vidas)
 
-        if vidas==0 or enemigos_elm==10:
+        if vidas==0 or enemigos_elm==objetivo:
             if not gover:
+                gover=True
                 print(puntaje)
-                pygame.mixer.music.stop()
-                pygame.mixer.quit()
-                running=False
-                menu()
+                guardar_resultados(pname,puntaje)
+                #pygame.mixer.music.stop()
+                #pygame.mixer.quit()
+                #srunning=False
+                #menu()
                 '''print("game over")
                 goscreen.add(GameOver())
                 gover=True'''
@@ -362,19 +440,15 @@ def game_scr(nomb,rang):
             if randn!=0 and len(enems.sprites())<9:
                 enems.add(Enemigo())
                 add_enemigo(randn-1)
-
-
-        def  add_enemigo_time():
-            if len(enems.sprites())<9:
-                enems.add(Enemigo())
                 
-        
-        if time.time()-tiempo_enemigo>3:
-            tiempo_enemigo=time.time()
-            if dificulty==1:
+    
+        if time.time()-tiempo_enemigo>tiempo_enem:
+            if dificulty !=2:
+                tiempo_enemigo=time.time()+0
                 add_enemigo(1)
             else:
-                add_enemigo(random.randrange(1,9,1))
+                tiempo_enemigo=time.time()+0
+                add_enemigo(random.randrange(1,3))
 
         # flip() the display to put your work on screen
         pygame.display.update()
