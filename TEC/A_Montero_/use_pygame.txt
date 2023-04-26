@@ -1,0 +1,23 @@
+#Documentación de pygame
+https://www.pygame.org/docs/
+
+#BG in pygame
+https://stackoverflow.com/questions/28005641/how-to-add-a-background-image-into-pygame
+
+#IMG in pygame
+https://pythonprogramming.net/displaying-images-pygame/
+
+#Elementos Graficos de tkinter
+https://www.geeksforgeeks.org/how-to-use-images-as-backgrounds-in-tkinter/
+
+#Ordenar listas con el método de burbuja
+https://www.geeksforgeeks.org/merge-sort/
+
+#Metodo para que la pantalla se vea full screen
+https://www.tutorialspoint.com/how-to-display-full-screen-mode-on-tkinter
+
+#Cerra ventana de tkinter
+https://www.delftstack.com/es/howto/python-tkinter/how-to-close-a-tkinter-window-with-a-button/
+
+#Sprites
+https://www.programacionfacil.org/cursos/pygame/capitulo_7_creacion_sprites.html
