@@ -1,5 +1,5 @@
 def mat1(A,B):
-    if isinstance(A,list) and isinstance(B,list) and isinstance(A,list) and isinstance(B,list) and len(A)==len(B) and len(A[0])==len(B[0]):
+    if isinstance(A,list) and isinstance(B,list) and isinstance(A[0],list) and isinstance(B[0],list) and len(A)==len(B) and len(A[0])==len(B[0]):
         return auxmat(A,B,0,0,[],[])
 
 def auxmat(v,w,i,j,rfila,result):

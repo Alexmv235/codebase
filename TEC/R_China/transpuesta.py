@@ -12,4 +12,4 @@ def auxt(mat,i,j,rfila,result):
         else:
              return auxt(mat,i+1,j,rfila+[mat[i][j]],result) 
 
-print(mTr)
+print(maTreanspuesta([[3,2,11],[5,6,3]]))
