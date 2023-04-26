@@ -1,4 +1,6 @@
-
+def maTreanspuesta(mat):
+    if isinstance(mat,list) and isinstance(mat[0],list):
+        return auxt(mat,0,0,[],[])
 
 
 def auxt(mat,i,j,rfila,result):
@@ -10,5 +12,4 @@ def auxt(mat,i,j,rfila,result):
         else:
              return auxt(mat,i+1,j,rfila+[mat[i][j]],result) 
 
-A=[[3,2,11],[5,6,3]]
-print(auxt(A,0,0,[],[]))
+print(mTr)
