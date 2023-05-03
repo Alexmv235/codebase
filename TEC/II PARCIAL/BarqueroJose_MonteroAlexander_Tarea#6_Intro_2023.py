@@ -169,6 +169,6 @@ def aux5(string,i,result):
     elif i==0:
         return aux5(string,i+1,result+string[i])
     elif string[i-1]==string[i]:
-        return aux(string,i+1,result)
+        return aux5(string,i+1,result)
     else:
-        return aux(string,i+1,result+string[i])
+        return aux5(string,i+1,result+string[i])
