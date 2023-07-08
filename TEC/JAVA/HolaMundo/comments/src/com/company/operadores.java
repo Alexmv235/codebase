@@ -1,6 +1,12 @@
 package com.company;
 
 public class operadores {
+    /**
+     * @param args
+     * Archivo demostrativo de los operadores que existen en java
+     * por ejemplo los aritmeticos, los logicos, los de asignación.
+     * También los de incremento y concatenacion
+     */
     public static void main(String[] args) {
         //operadores
 

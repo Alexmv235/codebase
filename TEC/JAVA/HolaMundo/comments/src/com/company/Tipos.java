@@ -1,10 +1,18 @@
 package com.company;
 
 public class Tipos {
+    /**
+     * @param args
+     * Clase demostrativa de los diferentes tipos de variables que
+     * existen en java
+     */
     public static void main(String[] args) {
         // tipo idetificador = valor
         //tipo identificador; y luego identitificador=valor
 
+        /** 
+         * Tipos enteros por ejemplo
+        */
         //enteros
         byte bnumber=1; //1 byte (8 bits)
         short snumber=2; //2 byte

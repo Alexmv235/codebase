@@ -3,5 +3,8 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar"
-    ]
+    ],
+    "javadoc-tools.generateJavadoc.isUsingPwsh": true,
+    "javadoc-tools.generateJavadoc.targetFolder": "./javadoc",
+    "javadoc-tools.generateJavadoc.workspaceSourceFolder": "./src"
 }
